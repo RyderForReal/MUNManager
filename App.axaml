@@ -1,0 +1,10 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
+             x:Class="MUNManager.App">
+    <Application.Styles>
+        <StyleInclude Source="/Views/Styling/MainStyle.axaml"/>
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <styling:FluentAvaloniaTheme/>
+    </Application.Styles>
+</Application>

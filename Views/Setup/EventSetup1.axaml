@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MUNManager.Views.Setup.EventSetup1">
+    <Grid>
+        <StackPanel>
+            <TextBlock Classes="SetupTitle AnimateIn1f">We'll need some information about your event.</TextBlock>
+            <StackPanel HorizontalAlignment="Center" Width="400" Margin="0 10 0 0">
+                <Label>Event Name (optional)</Label>
+                <TextBox Name="EventName"/>
+                <Label>Opening Speeches</Label>
+                <ToggleSwitch Name="OpeningSpeeches" IsChecked="True"/>
+                <Label>Opening Speech Duration (seconds)</Label>
+                <!--<NumericUpDown Minimum="0" Maximum="1000" Value="120" Name="OpeningSpeechDuration" />
+                <Label>Default Speech Duration in Moderated Caucus (seconds)</Label>
+                <NumericUpDown Minimum="0" Maximum="1000" Value="30" Name="SpeechDuration" />
+                <Label>Default Speech Duration in Moderated Caucus (seconds)</Label>
+                <NumericUpDown Minimum="10" Maximum="1000" Value="240" Name="CaucusDuration" />
+                <Label>Default Yield Behavior</Label>
+                <RadioButton IsEnabled="False" GroupName="Yielding">Chair</RadioButton>
+                <RadioButton IsEnabled="False" GroupName="Yielding">Next Speaker</RadioButton>-->
+            </StackPanel>
+
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 5 5">
+            <Button Click="WelcomeView" Margin="0 0 5 0">Back</Button>
+            <Button Click="NextView">Next</Button>
+        </StackPanel>    
+    </Grid>
+</UserControl>

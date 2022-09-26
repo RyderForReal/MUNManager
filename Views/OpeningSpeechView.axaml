@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MUNManager.Views.OpeningSpeechView">
+    <Grid>
+        <StackPanel>
+            <TextBlock Classes="SetupTitle AnimateIn1f">Opening Speeches</TextBlock>
+            <!-- 
+            Country flag and name, "next up" to the right
+            -->
+            <StackPanel HorizontalAlignment="Center">
+                <Label Classes="SetupTitle" HorizontalAlignment="Center">Currently speaking:</Label>
+                <TextBlock Name="CurrentlySpeakingName" HorizontalAlignment="Center" FontSize="22"/>
+                <ProgressBar Name="Duration" Value="100" Width="500"/>
+                <TextBlock Name="DurationText" HorizontalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Name="StartStop" Margin="0 0 2 0" Click="StartPauseEvent">Start</Button>
+                <Button Name="Skip" Margin="2 0 0 0" Click="SkipEvent">Skip</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

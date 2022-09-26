@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Height="200"
+             x:Class="MUNManager.Views.UnmoderatedCaucusView">
+    <Grid Margin="2">
+        <TextBlock Classes="SetupTitle">Unmoderated Caucus</TextBlock>
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label HorizontalAlignment="Center" Name="GlobalCountdownText"/>
+            <ProgressBar Name="GlobalCountdownBar" Width="500"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Button Name="GlobalStartStop" Click="AllStartStop_Click" Content="Start"/>
+            <Button Name="Back" Click="Back_Click">Exit</Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
