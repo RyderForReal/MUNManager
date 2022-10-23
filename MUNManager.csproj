@@ -43,6 +43,8 @@
         <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
     </ItemGroup>
     <ItemGroup>
+      <Content Include=".github\dependabot.yml" />
+      <Content Include=".github\workflows\codeql.yml" />
       <Content Include="Resources/**/*">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
