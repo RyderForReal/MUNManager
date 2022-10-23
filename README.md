@@ -2,7 +2,7 @@
 Built on AvaloniaUI, MUNManager is a cross-platform application for managing Model United Nations conferences. It is currently in development and only recommended for small-scale uses.
 
 ### Running the Application
-Download the latest release from the releases page and run the executable.
+Download the latest release from the releases page and run the executable (MUNManager, no extension).
 The application requires the latest version of .NET Core.
 
 #### Flags:
