@@ -31,6 +31,9 @@ If you'd like to contribute to MUNManager, please fork the repository and submit
 We **strongly** recommend using Linux for development to ensure compatibility (what works on Linux almost always works on other platforms). JetBrains Rider is recommended as well.
 
 Please sign your commits using GPG (preferable) or SSH. If the last commit in your pull request is not signed, we may decide to not merge it until you sign the commit.
+
+This repository is auto-mirrored from RGN Development's Gitea instance.
+
 ### License
 MUNManager is licensed under AGPL v3.0. See [LICENSE](LICENSE) for more information.
 
