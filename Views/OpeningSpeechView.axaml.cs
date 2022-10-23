@@ -42,6 +42,9 @@ namespace MUNManager.Views {
 			_progressBar.Value = TimeDefault;
 			
 			_progressText.Text = $"{TimeDefault}s";
+
+			_progressBar.Foreground = Brushes.White;
+			_progressText.Foreground = Brushes.White;
 		}
 
 		private void InitializeComponent()

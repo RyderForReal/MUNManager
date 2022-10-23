@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
+using MUNManager.Configuration;
 using MUNManager.Utils;
 
 namespace MUNManager.Views {
@@ -21,6 +22,8 @@ namespace MUNManager.Views {
 		{
 			InitializeComponent();
 			_instance = this;
+			MainWindow.Instance.Title = VolatileConfiguration.EventName + " | Unmoderated Caucus";
+
 			_globalTimeLeft = _instance._defaultGlobalTime;
 			
 			_globalTimer.Elapsed += GlobalTimerOnElapsed;

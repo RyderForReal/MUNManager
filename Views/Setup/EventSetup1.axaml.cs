@@ -34,8 +34,8 @@ namespace MUNManager.Views.Setup {
 			
 			VolatileConfiguration.DoOpeningSpeeches = _doOpeningSpeeches.IsChecked!.Value;
 			VolatileConfiguration.OpeningSpeechDuration = (uint)this.FindControl<NumericUpDown>("OpeningSpeechDuration").Value;
-			VolatileConfiguration.SpeechDuration = (uint)this.FindControl<NumericUpDown>("SpeechDuration").Value;
-			VolatileConfiguration.CaucusDuration = (uint)this.FindControl<NumericUpDown>("CaucusDuration").Value;
+			//VolatileConfiguration.SpeechDuration = (uint)this.FindControl<NumericUpDown>("SpeechDuration").Value;
+			//VolatileConfiguration.CaucusDuration = (uint)this.FindControl<NumericUpDown>("CaucusDuration").Value;
 			
 			MainWindow.Instance.Content = new CountrySelection();
 		}

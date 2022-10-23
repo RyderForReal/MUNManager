@@ -13,7 +13,8 @@
                 <Label>Opening Speeches</Label>
                 <ToggleSwitch Name="OpeningSpeeches" IsChecked="True"/>
                 <Label>Opening Speech Duration (seconds)</Label>
-                <!--<NumericUpDown Minimum="0" Maximum="1000" Value="120" Name="OpeningSpeechDuration" />
+                <NumericUpDown Minimum="0" Maximum="1000" Value="120" Name="OpeningSpeechDuration"/>
+                <!--
                 <Label>Default Speech Duration in Moderated Caucus (seconds)</Label>
                 <NumericUpDown Minimum="0" Maximum="1000" Value="30" Name="SpeechDuration" />
                 <Label>Default Speech Duration in Moderated Caucus (seconds)</Label>

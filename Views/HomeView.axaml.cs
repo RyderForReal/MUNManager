@@ -21,6 +21,7 @@ namespace MUNManager.Views {
 		{
 			InitializeComponent();
 			Instance = this;
+			MainWindow.Instance.Title = VolatileConfiguration.EventName + " | Home";
 			var dynamicEventName = this.FindControl<TextBlock>("DynEventName");
 			dynamicEventName.Text = VolatileConfiguration.EventName;
 

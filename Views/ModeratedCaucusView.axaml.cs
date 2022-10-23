@@ -36,6 +36,8 @@ namespace MUNManager.Views {
 		{
 			InitializeComponent();
 			_instance = this;
+			MainWindow.Instance.Title = VolatileConfiguration.EventName + " | Moderated Caucus";
+
 			_currentTimeLeft = DefaultCurrentTime;
 			_globalTimeLeft = DefaultGlobalTime;
 			

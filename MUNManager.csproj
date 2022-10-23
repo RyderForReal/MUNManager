@@ -10,7 +10,10 @@
         <Title>MUNManager</Title>
         <Authors>RGN Development</Authors>
         <Description>MUNManager was created with the aim of making the creation of a Model United Nations event as easy and uncomplicateed as possible.</Description>
-        <PackageProjectUrl>https://ryderg.dev</PackageProjectUrl>
+        <PackageProjectUrl>https://rgn.dev</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/RyderForReal/MUNManager</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
     <ItemGroup>
         <None Remove=".gitignore" />
