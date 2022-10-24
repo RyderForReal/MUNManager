@@ -16,15 +16,15 @@ namespace MUNManager.Utils {
         }
 		
 		/// <summary>
-		/// Example: a <= bx && a >= by, where a = itemToCheck, b = checkAgainst, x/y = min/max
+		/// Example: a <= bx && a >= by, where a = itemToCheck, b = checkAgainst, x/y = max/min
 		/// </summary>
 		/// <param name="itemToCheck"></param>
 		/// <param name="checkAgainst"></param>
 		/// <param name="lowerBound">Percentage in decimal form</param>
 		/// <param name="upperBound">Percentage in decimal form</param>
 		/// <returns></returns>
-        public static bool IsWithinBounds(int itemToCheck, int checkAgainst, double lowerBound, double upperBound)
-        { return itemToCheck >= checkAgainst * lowerBound && checkAgainst <= upperBound; }
+        public static bool IsWithinBounds(double itemToCheck, double checkAgainst, double lowerBound, double upperBound)
+		{ return itemToCheck <= checkAgainst * upperBound && itemToCheck >= checkAgainst * lowerBound; }
 
 	}
 }

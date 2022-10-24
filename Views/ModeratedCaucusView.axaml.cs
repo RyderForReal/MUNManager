@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
 using MUNManager.Configuration;
+using MUNManager.Utils;
 using Timer = System.Timers.Timer;
 
 namespace MUNManager.Views {
@@ -87,15 +88,15 @@ namespace MUNManager.Views {
 				{
 					_globalCountdownBar.Foreground = Brushes.Green;
 					_globalCountdownText.Foreground = Brushes.Green;
-				} else if (_globalTimeLeft < DefaultGlobalTime * 0.25 && _globalTimeLeft > DefaultGlobalTime * 0.20)
+				} else if (IfUtils.IsWithinBounds(_globalTimeLeft, DefaultGlobalTime, 0.2 ,0.25))
 				{
 					_globalCountdownBar.Foreground = Brushes.YellowGreen;
 					_globalCountdownText.Foreground = Brushes.YellowGreen;
-				} else if (_globalTimeLeft < DefaultGlobalTime * 0.20 && _globalTimeLeft > DefaultGlobalTime * 0.15)
+				} else if (IfUtils.IsWithinBounds(_globalTimeLeft, DefaultGlobalTime, 0.15, 0.2))
 				{
 					_globalCountdownBar.Foreground = Brushes.Yellow;
 					_globalCountdownText.Foreground = Brushes.Yellow;
-				}  else if (_globalTimeLeft < DefaultGlobalTime * 0.1 && _globalTimeLeft > DefaultGlobalTime * 0.05)
+				}  else if (IfUtils.IsWithinBounds(_globalTimeLeft, DefaultGlobalTime, 0.05, 0.1))
 				{
 					_globalCountdownBar.Foreground = Brushes.Orange;
 					_globalCountdownText.Foreground = Brushes.Orange;
@@ -120,15 +121,15 @@ namespace MUNManager.Views {
 				{
 					_currentCountdownBar.Foreground = Brushes.Green;
 					_currentCountdownText.Foreground = Brushes.Green;
-				} else if (_currentTimeLeft < DefaultCurrentTime * 0.25 && _currentTimeLeft > DefaultCurrentTime * 0.20)
+				} else if (IfUtils.IsWithinBounds(_globalTimeLeft, DefaultGlobalTime, 0.2 ,0.25))
 				{
 					_currentCountdownBar.Foreground = Brushes.YellowGreen;
 					_currentCountdownText.Foreground = Brushes.YellowGreen;
-				} else if (_currentTimeLeft < DefaultCurrentTime * 0.20 && _currentTimeLeft > DefaultCurrentTime * 0.15)
+				} else if (IfUtils.IsWithinBounds(_globalTimeLeft, DefaultGlobalTime, 0.15, 0.2))
 				{
 					_currentCountdownBar.Foreground = Brushes.Yellow;
 					_currentCountdownText.Foreground = Brushes.Yellow;
-				}  else if (_currentTimeLeft < DefaultCurrentTime * 0.1 && _currentTimeLeft > DefaultCurrentTime * 0.05)
+				}  else if (IfUtils.IsWithinBounds(_globalTimeLeft, DefaultGlobalTime, 0.05, 0.1))
 				{
 					_currentCountdownBar.Foreground = Brushes.Orange;
 					_currentCountdownText.Foreground = Brushes.Orange;

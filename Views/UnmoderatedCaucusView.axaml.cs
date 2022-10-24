@@ -48,7 +48,6 @@ namespace MUNManager.Views {
 			{
 				_globalCountdownBar.Value = _globalTimeLeft;
 				_globalCountdownText.Content = $"{_globalTimeLeft}s left";
-
 				if (_globalTimeLeft > _defaultGlobalTime * 0.25)
 				{
 					_globalCountdownBar.Foreground = Brushes.Green;
@@ -57,11 +56,11 @@ namespace MUNManager.Views {
 				{
 					_globalCountdownBar.Foreground = Brushes.YellowGreen;
 					_globalCountdownText.Foreground = Brushes.YellowGreen;
-				} else if (_globalTimeLeft < _defaultGlobalTime * 0.20 && _globalTimeLeft > _defaultGlobalTime * 0.15)
+				} else if (IfUtils.IsWithinBounds((int)_globalTimeLeft, (int)_defaultGlobalTime, 0.15, 0.2))
 				{
 					_globalCountdownBar.Foreground = Brushes.Yellow;
 					_globalCountdownText.Foreground = Brushes.Yellow;
-				}  else if (_globalTimeLeft < _defaultGlobalTime * 0.1 && _globalTimeLeft > _defaultGlobalTime * 0.05)
+				}  else if (IfUtils.IsWithinBounds(_globalTimeLeft, _defaultGlobalTime, 0.1, 0.05))
 				{
 					_globalCountdownBar.Foreground = Brushes.Orange;
 					_globalCountdownText.Foreground = Brushes.Orange;
