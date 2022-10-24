@@ -12,15 +12,15 @@ using Timer = System.Timers.Timer;
 namespace MUNManager.Views {
 	public partial class ModeratedCaucusView : UserControl {
 
-		private static ModeratedCaucusView _instance = null!;
+		internal static ModeratedCaucusView Instance = null!;
 		private static readonly ObservableCollection<string> Speakers = new();
 		private static readonly ObservableCollection<string> AvailableSpeakers = new(VolatileConfiguration.Participants ?? new() { "No participants" });
-		private readonly Timer _currentTimer = new(1000);
-		private readonly Timer _globalTimer = new(1000);
+		internal readonly Timer _currentTimer = new(1000);
+		internal readonly Timer _globalTimer = new(1000);
 
 		private readonly uint _defaultGlobalTime = HomeView.ModeratedDuration;
 		private readonly uint _defaultCurrentTime = HomeView.ModeratedTimeEach;
-		private uint _currentTimeLeft;
+		internal uint CurrentTimeLeft;
 		private uint _globalTimeLeft;
 
 		private static ProgressBar _globalCountdownBar = null!;
@@ -33,13 +33,14 @@ namespace MUNManager.Views {
 		private static Button _globalButton = null!;
 		private static Button _currentButton = null!;
 		private static Button _skipButton = null!;
+		private static Button _yieldButton = null!;
 		public ModeratedCaucusView()
 		{
 			InitializeComponent();
-			_instance = this;
+			Instance = this;
 			MainWindow.Instance.Title = VolatileConfiguration.EventName + " | Moderated Caucus";
 
-			_currentTimeLeft = _defaultCurrentTime;
+			CurrentTimeLeft = _defaultCurrentTime;
 			_globalTimeLeft = _defaultGlobalTime;
 			
 			_globalTimer.Elapsed += GlobalTimerOnElapsed;
@@ -47,6 +48,7 @@ namespace MUNManager.Views {
 
 			_currentButton = this.FindControl<Button>("CurrentStartStop");
 			_skipButton = this.FindControl<Button>("SkipCurrentSpeaker");
+			_yieldButton = this.FindControl<Button>("YieldToNext");
 			_availableList = this.FindControl<ListBox>("AllCountries");
 			_availableList.Items = AvailableSpeakers;
 			_currentSpeaker = this.FindControl<TextBlock>("CurrentSpeaker");
@@ -111,13 +113,13 @@ namespace MUNManager.Views {
 
 		private void CurrentTimerOnElapsed(object? sender, ElapsedEventArgs e)
 		{
-			_currentTimeLeft--;
+			CurrentTimeLeft--;
 			Dispatcher.UIThread.Post(() =>
 			{
-				_currentCountdownBar.Value = _currentTimeLeft;
-				_currentCountdownText.Content = $"{_currentTimeLeft}s left";
+				_currentCountdownBar.Value = CurrentTimeLeft;
+				_currentCountdownText.Content = $"{CurrentTimeLeft}s left";
 
-				if (_currentTimeLeft > _defaultCurrentTime * 0.25)
+				if (CurrentTimeLeft > _defaultCurrentTime * 0.25)
 				{
 					_currentCountdownBar.Foreground = Brushes.Green;
 					_currentCountdownText.Foreground = Brushes.Green;
@@ -133,14 +135,14 @@ namespace MUNManager.Views {
 				{
 					_currentCountdownBar.Foreground = Brushes.Orange;
 					_currentCountdownText.Foreground = Brushes.Orange;
-				} else if (_currentTimeLeft < _defaultCurrentTime * 0.05)
+				} else if (CurrentTimeLeft < _defaultCurrentTime * 0.05)
 				{
 					_currentCountdownBar.Foreground = Brushes.Red;
 					_currentCountdownText.Foreground = Brushes.Red;
 				}
 			});
 
-			if (_currentTimeLeft > 0)
+			if (CurrentTimeLeft > 0)
 				return;
 			_currentTimer.Stop();
 			Reset();
@@ -168,13 +170,13 @@ namespace MUNManager.Views {
 			}
 		}
 
-		private static void Reset()
+		internal static void Reset()
 		{
 			Dispatcher.UIThread.Post(() =>
 			{
 				_currentButton.Content = "Start";
-				_instance._currentTimeLeft = _instance._defaultCurrentTime;
-				_currentCountdownBar.Value = _instance._defaultCurrentTime;
+				Instance.CurrentTimeLeft = Instance._defaultCurrentTime;
+				_currentCountdownBar.Value = Instance._defaultCurrentTime;
 				_currentSpeaker.Text = Speakers.Count.Equals(0) ? "No speakers" : Speakers[0];
 			});
 			if (Speakers.Count == 0)
@@ -183,6 +185,7 @@ namespace MUNManager.Views {
 				{
 					_currentButton.IsEnabled = false;
 					_skipButton.IsEnabled = false;
+					_yieldButton.IsEnabled = false;
 				});
 				return;	
 			}
@@ -215,7 +218,7 @@ namespace MUNManager.Views {
 				{
 					_currentTimer.Start();
 					_currentButton.Content = "Pause Current";
-					_currentCountdownText.Content = $"{_currentTimeLeft}s left";
+					_currentCountdownText.Content = $"{CurrentTimeLeft}s left";
 				}
 				_globalTimer.Start();
 				_globalCountdownText.Content = $"{_globalTimeLeft}s left";	
@@ -230,6 +233,7 @@ namespace MUNManager.Views {
 				{
 					_currentButton.IsEnabled = true;
 					_skipButton.IsEnabled = true;
+					_yieldButton.IsEnabled = true;
 				});
 			}
 			Speakers.Add(_availableList.SelectedItems[0].ToString());
@@ -249,6 +253,12 @@ namespace MUNManager.Views {
 		private void Back_Click(object? sender, RoutedEventArgs e)
 		{
 			MainWindow.Instance.Content = new HomeView();
+		}
+
+		private void Yield_Click(object? sender, RoutedEventArgs e)
+		{
+			if (Speakers.Count == 0) return;
+			new YieldDialog().Show();
 		}
 	}
 }

@@ -26,6 +26,7 @@
         </Grid>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 5 3 0">
             <Button Click="CurrentStartStop_onClick" Name="CurrentStartStop" IsEnabled="False" HorizontalAlignment="Right">Start Current</Button>
+            <Button Click="Yield_Click" Name="YieldToNext" IsEnabled="False">Yield</Button>
             <Button Click="SkipCurrentSpeaker_Click" IsEnabled="False" HorizontalAlignment="Right" Name="SkipCurrentSpeaker">Skip Current</Button>
             <Button Click="Remove_Click">Remove from List</Button>
         </StackPanel>
