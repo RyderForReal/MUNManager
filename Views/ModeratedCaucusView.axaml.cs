@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Timers;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
@@ -15,44 +18,48 @@ namespace MUNManager.Views {
 		internal static ModeratedCaucusView Instance = null!;
 		private readonly ObservableCollection<string> _speakers = new();
 		private static readonly ObservableCollection<string> AvailableSpeakers = new(VolatileConfiguration.Participants ?? new() { "No participants" });
-		internal readonly Timer _currentTimer = new(1000);
-		internal readonly Timer _globalTimer = new(1000);
 
+		private readonly Timer _timer = new(1000);
+		internal bool GlobalTimerRunning { get; set; }
+		internal bool CurrentTimerRunning { get; set; }
+		
 		private readonly uint _defaultGlobalTime = HomeView.ModeratedDuration;
 		private readonly uint _defaultCurrentTime = HomeView.ModeratedTimeEach;
 		internal uint CurrentTimeLeft;
 		private uint _globalTimeLeft;
 
-		private ProgressBar _globalCountdownBar = null!;
-		private ProgressBar _currentCountdownBar = null!;
-		private Label _globalCountdownText = null!;
-		private Label _currentCountdownText = null!;
-		private ListBox _availableList = null!;
-		private TextBlock _currentSpeaker = null!;
-		private ListBox _nextList = null!;
-		private TextBlock _viewTitle = null!;
-		private Button _globalButton = null!;
-		private Button _currentButton = null!;
-		private Button _skipButton = null!;
-		private Button _yieldButton = null!;
+		private readonly ProgressBar _globalCountdownBar;
+		private readonly ProgressBar _currentCountdownBar;
+		private readonly Label _globalCountdownText;
+		private readonly Label _currentCountdownText;
+		private readonly TextBlock _currentSpeaker;
+		private readonly TextBlock _viewTitle;
+		private readonly ListBox _nextList;
+		private readonly ListBox _availableList;
+		private readonly Button _globalButton;
+		private readonly Button _currentButton;
+		private readonly Button _skipButton;
+		private readonly Button _yieldButton;
 		public ModeratedCaucusView()
 		{
 			InitializeComponent();
 			Instance = this;
-			MainWindow.Instance.Title = VolatileConfiguration.EventName + " | Moderated Caucus";
+			MainWindow.Instance.Title = $"{VolatileConfiguration.EventName} | Moderated Caucus";
 
 			CurrentTimeLeft = _defaultCurrentTime;
 			_globalTimeLeft = _defaultGlobalTime;
 			
-			_globalTimer.Elapsed += GlobalTimerOnElapsed;
-			_currentTimer.Elapsed += CurrentTimerOnElapsed;
+			//GlobalTimer.Elapsed += GlobalTimerOnElapsed;
+			//CurrentTimer.Elapsed += CurrentTimerOnElapsed;
+
+			_timer.Start();
+			_timer.Elapsed += TimerOnElapsed;
 
 			_currentButton = this.FindControl<Button>("CurrentStartStop");
 			_skipButton = this.FindControl<Button>("SkipCurrentSpeaker");
 			_yieldButton = this.FindControl<Button>("YieldToNext");
 			_availableList = this.FindControl<ListBox>("AllCountries");
 			_viewTitle = this.FindControl<TextBlock>("ViewTitle");
-			_availableList.Items = AvailableSpeakers;
 			_currentSpeaker = this.FindControl<TextBlock>("CurrentSpeaker");
 			_nextList = this.FindControl<ListBox>("NextCountries");
 			_globalButton = this.FindControl<Button>("GlobalStartStop");
@@ -69,88 +76,88 @@ namespace MUNManager.Views {
 			_globalCountdownText.Content = $"{_globalTimeLeft}s left";
 
 			// TODO: Remove item at index 0 for UI (Added to Git, remove soon)
+			_availableList.Items = AvailableSpeakers;
 			_nextList.Items = _speakers;
 		}
 		
-
-		// TODO: Merge into single method to clean up this mess
-		private void GlobalTimerOnElapsed(object? sender, ElapsedEventArgs e)
+		private void TimerOnElapsed(object? sender, ElapsedEventArgs e)
 		{
-			_globalTimeLeft--;
-			Dispatcher.UIThread.Post(() =>
+			if (GlobalTimerRunning)
 			{
-				_globalCountdownBar.Value = _globalTimeLeft;
-				_globalCountdownText.Content = $"{_globalTimeLeft}s left";
-
-				if (_globalTimeLeft > _defaultGlobalTime * 0.25)
-				{
-					_globalCountdownBar.Foreground = Brushes.Green;
-					_globalCountdownText.Foreground = Brushes.Green;
-				} else if (IfUtils.IsWithinBounds(_globalTimeLeft, _defaultGlobalTime, 0.2 ,0.25))
-				{
-					_globalCountdownBar.Foreground = Brushes.YellowGreen;
-					_globalCountdownText.Foreground = Brushes.YellowGreen;
-				} else if (IfUtils.IsWithinBounds(_globalTimeLeft, _defaultGlobalTime, 0.15, 0.2))
-				{
-					_globalCountdownBar.Foreground = Brushes.Yellow;
-					_globalCountdownText.Foreground = Brushes.Yellow;
-				}  else if (IfUtils.IsWithinBounds(_globalTimeLeft, _defaultGlobalTime, 0.05, 0.1))
-				{
-					_globalCountdownBar.Foreground = Brushes.Orange;
-					_globalCountdownText.Foreground = Brushes.Orange;
-				} else if (_globalTimeLeft < _defaultGlobalTime * 0.05)
-				{
-					_globalCountdownBar.Foreground = Brushes.Red;
-					_globalCountdownText.Foreground = Brushes.Red;
-					_viewTitle.Foreground = Brushes.Red;
-				}
-
-				if (_globalTimeLeft != 0)
-					return;
-				_globalCountdownBar.Background = Brushes.Red;
-				_globalCountdownText.Content = "This caucus has ended (0s left).";
-				_currentCountdownBar.Background = Brushes.Red;
-				_globalTimer.Stop();
-				_currentTimer.Stop();
-			});
+				if (_globalTimeLeft > 0)
+					_globalTimeLeft--;
+				UpdateCountdownUI(1);
+				var color = CountdownUtils.DetermineColor(_globalTimeLeft, _defaultGlobalTime);
+				SetCountdownUIColor(CountdownUtils.DetermineColor(_globalTimeLeft, _defaultGlobalTime), 1, Equals(color, VolatileConfiguration.CriticalBrush));
+			}
+			// ReSharper disable once InvertIf
+			if (CurrentTimerRunning)
+			{
+				if (CurrentTimeLeft > 0)
+					CurrentTimeLeft--;
+				UpdateCountdownUI(2);
+				var color = CountdownUtils.DetermineColor(CurrentTimeLeft, _defaultCurrentTime);
+				SetCountdownUIColor(CountdownUtils.DetermineColor(CurrentTimeLeft, _defaultCurrentTime), 2, Equals(color, VolatileConfiguration.CriticalBrush));
+			}
 		}
 
-		private void CurrentTimerOnElapsed(object? sender, ElapsedEventArgs e)
+		// ReSharper disable once InconsistentNaming
+		private void UpdateCountdownUI(uint mode, bool expired = false)
 		{
-			CurrentTimeLeft--;
-			Dispatcher.UIThread.Post(() =>
+			void Update()
 			{
-				_currentCountdownBar.Value = CurrentTimeLeft;
-				_currentCountdownText.Content = $"{CurrentTimeLeft}s left";
+				switch (mode)
+				{
+					case 1:
+						_globalCountdownBar.Value = _globalTimeLeft;
+						_globalCountdownText.Content = !expired ? $"{_globalTimeLeft}s left" : $"The caucus has ended ({_globalTimeLeft}s left).";
+						break;
+					case 2:
+						_currentCountdownBar.Value = CurrentTimeLeft;
+						_currentCountdownText.Content = !expired ? $"{CurrentTimeLeft}s left" : $"The speaker's time has run out ({CurrentTimeLeft}s left).";
+						break;
+					default:
+						_globalCountdownBar.Value = _globalTimeLeft;
+						_globalCountdownText.Content = !expired ? $"{_globalTimeLeft}s left" : $"The caucus has ended ({_globalTimeLeft}s left).";
+						_currentCountdownBar.Value = CurrentTimeLeft;
+						_currentCountdownText.Content = !expired ? $"{CurrentTimeLeft}s left" : $"The speaker's time has run out ({CurrentTimeLeft}s left).";
+						break;
+				}	
+			}
+			Dispatcher.UIThread.Post(Update);
+		}
+		
+		// ReSharper disable once InconsistentNaming
+		/// <param name="mode">1: GlobalTimer, 2: CurrentTimer, else update both</param>
+		/// <param name="isAlert">Whether to color the view's title</param>
+		// ReSharper disable once InvalidXmlDocComment
+		private void SetCountdownUIColor(IBrush color, uint mode, bool isAlert = false)
+		{
+			void Update()
+			{
+				switch (mode)
+				{
+					case 1:
+						_globalCountdownBar.Foreground = color;
+						_globalCountdownText.Foreground = color;
+						if (isAlert) { _viewTitle.Foreground = color; }
 
-				if (CurrentTimeLeft > _defaultCurrentTime * 0.25)
-				{
-					_currentCountdownBar.Foreground = Brushes.Green;
-					_currentCountdownText.Foreground = Brushes.Green;
-				} else if (IfUtils.IsWithinBounds(CurrentTimeLeft, _defaultGlobalTime, 0.2 ,0.25))
-				{
-					_currentCountdownBar.Foreground = Brushes.YellowGreen;
-					_currentCountdownText.Foreground = Brushes.YellowGreen;
-				} else if (IfUtils.IsWithinBounds(CurrentTimeLeft, _defaultGlobalTime, 0.15, 0.2))
-				{
-					_currentCountdownBar.Foreground = Brushes.Yellow;
-					_currentCountdownText.Foreground = Brushes.Yellow;
-				}  else if (IfUtils.IsWithinBounds(CurrentTimeLeft, _defaultGlobalTime, 0.05, 0.1))
-				{
-					_currentCountdownBar.Foreground = Brushes.Orange;
-					_currentCountdownText.Foreground = Brushes.Orange;
-				} else if (CurrentTimeLeft < _defaultCurrentTime * 0.05)
-				{
-					_currentCountdownBar.Foreground = Brushes.Red;
-					_currentCountdownText.Foreground = Brushes.Red;
-					_currentSpeaker.Foreground = Brushes.Red;
+						break;
+					case 2:
+						_currentCountdownBar.Foreground = color;
+						_currentCountdownText.Foreground = color;
+						break;
+					default:
+						_currentCountdownBar.Foreground = color;
+						_currentCountdownText.Foreground = color;
+						_globalCountdownBar.Foreground = color;
+						_globalCountdownText.Foreground = color;
+						if (isAlert) { _viewTitle.Foreground = color; }
+
+						break;
 				}
-			});
-
-			if (CurrentTimeLeft > 0)
-				return;
-			_currentTimer.Stop();
-			Reset();
+			}
+			Dispatcher.UIThread.Post(Update);
 		}
 
 		private void InitializeComponent()
@@ -162,13 +169,13 @@ namespace MUNManager.Views {
 		{
 			if (_speakers.Count == 0 && !VolatileConfiguration.Debug) return;
 
-			if (_currentTimer.Enabled)
+			if (CurrentTimerRunning)
 			{
-				_currentTimer.Stop();
+				CurrentTimerRunning = false;
 				_currentButton.Content = "Start Current";
 			} else {
-				_globalTimer.Start();
-				_currentTimer.Start();
+				CurrentTimerRunning = true;
+				GlobalTimerRunning = true;
 				_currentButton.Content = "Pause Current";
 				_globalButton.Content = "Pause Global";
 
@@ -204,12 +211,12 @@ namespace MUNManager.Views {
 
 		private void AllStartStop_Click(object? sender, RoutedEventArgs e)
 		{
-			if (_globalTimer.Enabled)
+			if (GlobalTimerRunning)
 			{
 				_globalButton.Content = "Start Global";
 				_currentButton.Content = "Start Current";
-				_currentTimer.Stop();
-				_globalTimer.Stop();
+				CurrentTimerRunning = false;
+				GlobalTimerRunning = false;
 				_globalCountdownBar.Foreground = Brushes.White;
 				_globalCountdownText.Foreground = Brushes.White;
 				_currentCountdownBar.Foreground = Brushes.White;
@@ -221,11 +228,11 @@ namespace MUNManager.Views {
 				_globalButton.Content = "Pause Global";
 				if (!_currentSpeaker.Text.Equals("No speakers"))
 				{
-					_currentTimer.Start();
+					CurrentTimerRunning	= true;
 					_currentButton.Content = "Pause Current";
 					_currentCountdownText.Content = $"{CurrentTimeLeft}s left";
 				}
-				_globalTimer.Start();
+				GlobalTimerRunning = true;
 				_globalCountdownText.Content = $"{_globalTimeLeft}s left";	
 			}
 		}

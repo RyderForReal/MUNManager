@@ -1,5 +1,6 @@
 // (c) 2022, RyderForNow. This project is licensed under AGPL v.3.0.
 
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -8,19 +9,16 @@ using MUNManager.Configuration;
 
 namespace MUNManager.Views {
 	public partial class YieldDialog : Window {
-		internal static YieldDialog Instance = null!;
-
 		public YieldDialog()
 		{
 			InitializeComponent();
 #if DEBUG
 			this.AttachDevTools();
 #endif
-			Instance = this;
-			Title = $"{VolatileConfiguration.EventName} | Yielding";
-			
-			ModeratedCaucusView.Instance._currentTimer.Stop();
-			ModeratedCaucusView.Instance._globalTimer.Stop();
+			Title = $"{VolatileConfiguration.EventName} | Yield remaining time";
+
+			ModeratedCaucusView.Instance.CurrentTimerRunning = false;
+			ModeratedCaucusView.Instance.GlobalTimerRunning = false;
 		}
 
 		private void InitializeComponent()
@@ -33,6 +31,7 @@ namespace MUNManager.Views {
 			var remainingTime = ModeratedCaucusView.Instance.CurrentTimeLeft;
 			ModeratedCaucusView.Reset();
 			ModeratedCaucusView.Instance.CurrentTimeLeft += remainingTime;
+			Console.WriteLine($"{ModeratedCaucusView.Instance.CurrentTimeLeft} seconds remaining (added {remainingTime} seconds)");
 			Close();
 		}
 		
@@ -43,7 +42,10 @@ namespace MUNManager.Views {
 		}
 
 		private void Cancel_Click(object? sender, RoutedEventArgs e)
+
 		{
+			ModeratedCaucusView.Instance.GlobalTimerRunning = true;
+			ModeratedCaucusView.Instance.CurrentTimerRunning = true;
 			Close();
 		}
 	}
