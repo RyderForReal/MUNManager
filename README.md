@@ -34,6 +34,9 @@ Please sign your commits using GPG (preferable) or SSH. If the last commit in yo
 
 This repository is auto-mirrored from RGN Development's Gitea instance.
 
+#### Code of Conduct
+Don't be an asshole.
+
 ### License
 MUNManager is licensed under AGPL v3.0. See [LICENSE](LICENSE) for more information.
 
