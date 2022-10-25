@@ -123,15 +123,15 @@ namespace MUNManager.Views {
 				{
 					_currentCountdownBar.Foreground = Brushes.Green;
 					_currentCountdownText.Foreground = Brushes.Green;
-				} else if (IfUtils.IsWithinBounds(_globalTimeLeft, _defaultGlobalTime, 0.2 ,0.25))
+				} else if (IfUtils.IsWithinBounds(CurrentTimeLeft, _defaultGlobalTime, 0.2 ,0.25))
 				{
 					_currentCountdownBar.Foreground = Brushes.YellowGreen;
 					_currentCountdownText.Foreground = Brushes.YellowGreen;
-				} else if (IfUtils.IsWithinBounds(_globalTimeLeft, _defaultGlobalTime, 0.15, 0.2))
+				} else if (IfUtils.IsWithinBounds(CurrentTimeLeft, _defaultGlobalTime, 0.15, 0.2))
 				{
 					_currentCountdownBar.Foreground = Brushes.Yellow;
 					_currentCountdownText.Foreground = Brushes.Yellow;
-				}  else if (IfUtils.IsWithinBounds(_globalTimeLeft, _defaultGlobalTime, 0.05, 0.1))
+				}  else if (IfUtils.IsWithinBounds(CurrentTimeLeft, _defaultGlobalTime, 0.05, 0.1))
 				{
 					_currentCountdownBar.Foreground = Brushes.Orange;
 					_currentCountdownText.Foreground = Brushes.Orange;
@@ -139,6 +139,7 @@ namespace MUNManager.Views {
 				{
 					_currentCountdownBar.Foreground = Brushes.Red;
 					_currentCountdownText.Foreground = Brushes.Red;
+					_currentSpeaker.Foreground = Brushes.Red;
 				}
 			});
 
