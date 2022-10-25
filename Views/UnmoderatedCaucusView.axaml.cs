@@ -9,22 +9,22 @@ using MUNManager.Utils;
 
 namespace MUNManager.Views {
 	public partial class UnmoderatedCaucusView : UserControl {
-		private static UnmoderatedCaucusView _instance = null!;
+		internal static UnmoderatedCaucusView Instance = null!;
 		private readonly Timer _globalTimer = new(1000);
 
 		private readonly uint _defaultGlobalTime = HomeView.UnmoderatedDuration;
-		private static uint _globalTimeLeft;
+		private uint _globalTimeLeft;
 
-		private static ProgressBar _globalCountdownBar = null!;
-		private static Label _globalCountdownText = null!;
-		private static Button _globalButton = null!;
+		private ProgressBar _globalCountdownBar = null!;
+		private Label _globalCountdownText = null!;
+		private Button _globalButton = null!;
 		public UnmoderatedCaucusView()
 		{
 			InitializeComponent();
-			_instance = this;
+			Instance = this;
 			MainWindow.Instance.Title = VolatileConfiguration.EventName + " | Unmoderated Caucus";
 
-			_globalTimeLeft = _instance._defaultGlobalTime;
+			_globalTimeLeft = Instance._defaultGlobalTime;
 			
 			_globalTimer.Elapsed += GlobalTimerOnElapsed;
 			_globalButton = this.FindControl<Button>("GlobalStartStop");

@@ -45,7 +45,7 @@ namespace MUNManager.Views {
 		
 		private void Moderated_Click(object? sender, RoutedEventArgs e)
 		{
-			if (_moderatedTime.Value < Constants.ModeratedCaucusMinimumDuration || _moderatedTimeEach.Value < Constants.ModeratedCaucusMinimumDurationEach) return;
+			if ((_moderatedTime.Value < Constants.ModeratedCaucusMinimumDuration || _moderatedTimeEach.Value < Constants.ModeratedCaucusMinimumDurationEach) && !VolatileConfiguration.Debug) return;
 			
 			ModeratedDuration = (uint)_moderatedTime.Value;
 			ModeratedTimeEach = (uint)_moderatedTimeEach.Value;
@@ -54,7 +54,7 @@ namespace MUNManager.Views {
 
 		private void Unmoderated_Click(object? sender, RoutedEventArgs e)
 		{
-			if (_unmoderatedTime.Value < Constants.UnmoderatedCaucusMinimumDuration) return;
+			if (_unmoderatedTime.Value < Constants.UnmoderatedCaucusMinimumDuration && !VolatileConfiguration.Debug) return;
 			
 			UnmoderatedDuration = (uint)_unmoderatedTime.Value;
 			MainWindow.Instance.Content = new UnmoderatedCaucusView();

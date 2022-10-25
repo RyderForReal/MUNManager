@@ -6,7 +6,7 @@
              x:Class="MUNManager.Views.ModeratedCaucusView">
     <Grid Margin="2">
     <StackPanel>
-        <TextBlock Classes="SetupTitle">Moderated Caucus</TextBlock>
+        <TextBlock Classes="SetupTitle" Name="ViewTitle">Moderated Caucus</TextBlock>
         <StackPanel>
             <Label Name="GlobalCountdownText" HorizontalAlignment="Center"/>
             <ProgressBar Name="GlobalCountdownBar" Width="600" HorizontalAlignment="Center"/>

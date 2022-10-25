@@ -13,7 +13,7 @@ namespace MUNManager.Views {
 	public partial class ModeratedCaucusView : UserControl {
 
 		internal static ModeratedCaucusView Instance = null!;
-		private static readonly ObservableCollection<string> Speakers = new();
+		private readonly ObservableCollection<string> _speakers = new();
 		private static readonly ObservableCollection<string> AvailableSpeakers = new(VolatileConfiguration.Participants ?? new() { "No participants" });
 		internal readonly Timer _currentTimer = new(1000);
 		internal readonly Timer _globalTimer = new(1000);
@@ -23,17 +23,18 @@ namespace MUNManager.Views {
 		internal uint CurrentTimeLeft;
 		private uint _globalTimeLeft;
 
-		private static ProgressBar _globalCountdownBar = null!;
-		private static ProgressBar _currentCountdownBar = null!;
-		private static Label _globalCountdownText = null!;
-		private static Label _currentCountdownText = null!;
-		private static ListBox _availableList = null!;
-		private static TextBlock _currentSpeaker = null!;
-		private static ListBox _nextList = null!;
-		private static Button _globalButton = null!;
-		private static Button _currentButton = null!;
-		private static Button _skipButton = null!;
-		private static Button _yieldButton = null!;
+		private ProgressBar _globalCountdownBar = null!;
+		private ProgressBar _currentCountdownBar = null!;
+		private Label _globalCountdownText = null!;
+		private Label _currentCountdownText = null!;
+		private ListBox _availableList = null!;
+		private TextBlock _currentSpeaker = null!;
+		private ListBox _nextList = null!;
+		private TextBlock _viewTitle = null!;
+		private Button _globalButton = null!;
+		private Button _currentButton = null!;
+		private Button _skipButton = null!;
+		private Button _yieldButton = null!;
 		public ModeratedCaucusView()
 		{
 			InitializeComponent();
@@ -50,12 +51,13 @@ namespace MUNManager.Views {
 			_skipButton = this.FindControl<Button>("SkipCurrentSpeaker");
 			_yieldButton = this.FindControl<Button>("YieldToNext");
 			_availableList = this.FindControl<ListBox>("AllCountries");
+			_viewTitle = this.FindControl<TextBlock>("ViewTitle");
 			_availableList.Items = AvailableSpeakers;
 			_currentSpeaker = this.FindControl<TextBlock>("CurrentSpeaker");
 			_nextList = this.FindControl<ListBox>("NextCountries");
 			_globalButton = this.FindControl<Button>("GlobalStartStop");
 
-			_currentSpeaker.Text = Speakers.Count.Equals(0) ? "No speakers" : Speakers[0];
+			_currentSpeaker.Text = _speakers.Count.Equals(0) ? "No speakers" : _speakers[0];
 
 			_globalCountdownBar = this.FindControl<ProgressBar>("GlobalCountdownBar");
 			_currentCountdownBar = this.FindControl<ProgressBar>("CurrentCountdownBar");
@@ -67,7 +69,7 @@ namespace MUNManager.Views {
 			_globalCountdownText.Content = $"{_globalTimeLeft}s left";
 
 			// TODO: Remove item at index 0 for UI (Added to Git, remove soon)
-			_nextList.Items = Speakers;
+			_nextList.Items = _speakers;
 		}
 		
 
@@ -75,12 +77,6 @@ namespace MUNManager.Views {
 		private void GlobalTimerOnElapsed(object? sender, ElapsedEventArgs e)
 		{
 			_globalTimeLeft--;
-			if (_globalTimeLeft == 0)
-			{
-				_globalTimer.Stop();
-				_currentTimer.Stop();
-				Reset();
-			}
 			Dispatcher.UIThread.Post(() =>
 			{
 				_globalCountdownBar.Value = _globalTimeLeft;
@@ -106,8 +102,16 @@ namespace MUNManager.Views {
 				{
 					_globalCountdownBar.Foreground = Brushes.Red;
 					_globalCountdownText.Foreground = Brushes.Red;
+					_viewTitle.Foreground = Brushes.Red;
 				}
 
+				if (_globalTimeLeft != 0)
+					return;
+				_globalCountdownBar.Background = Brushes.Red;
+				_globalCountdownText.Content = "This caucus has ended (0s left).";
+				_currentCountdownBar.Background = Brushes.Red;
+				_globalTimer.Stop();
+				_currentTimer.Stop();
 			});
 		}
 
@@ -156,7 +160,7 @@ namespace MUNManager.Views {
 
 		private void CurrentStartStop_onClick(object? sender, RoutedEventArgs e)
 		{
-			if (Speakers.Count == 0 && !VolatileConfiguration.Debug) return;
+			if (_speakers.Count == 0 && !VolatileConfiguration.Debug) return;
 
 			if (_currentTimer.Enabled)
 			{
@@ -175,22 +179,22 @@ namespace MUNManager.Views {
 		{
 			Dispatcher.UIThread.Post(() =>
 			{
-				_currentButton.Content = "Start";
+				Instance._currentButton.Content = "Start";
 				Instance.CurrentTimeLeft = Instance._defaultCurrentTime;
-				_currentCountdownBar.Value = Instance._defaultCurrentTime;
-				_currentSpeaker.Text = Speakers.Count.Equals(0) ? "No speakers" : Speakers[0];
+				Instance._currentCountdownBar.Value = Instance._defaultCurrentTime;
+				Instance._currentSpeaker.Text = Instance._speakers.Count.Equals(0) ? "No speakers" : Instance._speakers[0];
 			});
-			if (Speakers.Count == 0)
+			if (Instance._speakers.Count == 0)
 			{
 				Dispatcher.UIThread.Post(() =>
 				{
-					_currentButton.IsEnabled = false;
-					_skipButton.IsEnabled = false;
-					_yieldButton.IsEnabled = false;
+					Instance._currentButton.IsEnabled = false;
+					Instance._skipButton.IsEnabled = false;
+					Instance._yieldButton.IsEnabled = false;
 				});
 				return;	
 			}
-			Speakers.RemoveAt(0);
+			Instance._speakers.RemoveAt(0);
 		}
 		
 		private void SkipCurrentSpeaker_Click(object? sender, RoutedEventArgs e)
@@ -228,7 +232,7 @@ namespace MUNManager.Views {
 		private void AddToNextUp(object? sender, RoutedEventArgs e)
 		{
 			if (_availableList.SelectedItems.Count == 0) return;
-			if (Speakers.Count == 0)
+			if (_speakers.Count == 0)
 			{
 				Dispatcher.UIThread.Post(() =>
 				{
@@ -237,18 +241,18 @@ namespace MUNManager.Views {
 					_yieldButton.IsEnabled = true;
 				});
 			}
-			Speakers.Add(_availableList.SelectedItems[0].ToString());
+			_speakers.Add(_availableList.SelectedItems[0].ToString());
 			
-			if (Speakers.Count == 1)
+			if (_speakers.Count == 1)
 			{
-				_currentSpeaker.Text = Speakers[0];
+				_currentSpeaker.Text = _speakers[0];
 			}
 		}
 
 		private void Remove_Click(object? sender, RoutedEventArgs e)
 		{
 			if (_nextList.SelectedItems.Count == 0) return;
-			Speakers.Remove(_nextList.SelectedItems[0].ToString());
+			_speakers.Remove(_nextList.SelectedItems[0].ToString());
 		}
 
 		private void Back_Click(object? sender, RoutedEventArgs e)
@@ -258,7 +262,7 @@ namespace MUNManager.Views {
 
 		private void Yield_Click(object? sender, RoutedEventArgs e)
 		{
-			if (Speakers.Count == 0) return;
+			if (_speakers.Count == 0) return;
 			new YieldDialog().Show();
 		}
 	}
