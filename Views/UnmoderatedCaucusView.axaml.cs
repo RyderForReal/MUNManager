@@ -10,23 +10,23 @@ using MUNManager.Utils;
 namespace MUNManager.Views {
 	public partial class UnmoderatedCaucusView : UserControl {
 		internal static UnmoderatedCaucusView Instance = null!;
-		private readonly Timer _globalTimer = new(1000);
+		private readonly Timer _timer = new(1000);
 
 		private readonly uint _defaultGlobalTime = HomeView.UnmoderatedDuration;
 		private uint _globalTimeLeft;
 
-		private ProgressBar _globalCountdownBar = null!;
-		private Label _globalCountdownText = null!;
-		private Button _globalButton = null!;
+		private readonly ProgressBar _globalCountdownBar;
+		private readonly Label _globalCountdownText;
+		private readonly Button _globalButton;
 		public UnmoderatedCaucusView()
 		{
 			InitializeComponent();
 			Instance = this;
-			MainWindow.Instance.Title = VolatileConfiguration.EventName + " | Unmoderated Caucus";
+			MainWindow.Instance.Title = $"{VolatileConfiguration.EventName} | Unmoderated Caucus";
 
 			_globalTimeLeft = Instance._defaultGlobalTime;
 			
-			_globalTimer.Elapsed += GlobalTimerOnElapsed;
+			_timer.Elapsed += TimerOnElapsed;
 			_globalButton = this.FindControl<Button>("GlobalStartStop");
 
 			_globalCountdownBar = this.FindControl<ProgressBar>("GlobalCountdownBar");
@@ -37,12 +37,12 @@ namespace MUNManager.Views {
 		}
 
 		// TODO: Merge into single method to clean up this mess
-		private void GlobalTimerOnElapsed(object? sender, ElapsedEventArgs e)
+		private void TimerOnElapsed(object? sender, ElapsedEventArgs e)
 		{
 			_globalTimeLeft--;
 			if (_globalTimeLeft == 0)
 			{
-				_globalTimer.Stop();
+				_timer.Stop();
 			}
 			Dispatcher.UIThread.Post(() =>
 			{
@@ -80,17 +80,17 @@ namespace MUNManager.Views {
 
 		private void AllStartStop_Click(object? sender, RoutedEventArgs e)
 		{
-			if (_globalTimer.Enabled)
+			if (_timer.Enabled)
 			{
 				_globalButton.Content = "Start Global";
-				_globalTimer.Stop();
+				_timer.Stop();
 				_globalCountdownBar.Foreground = Brushes.White;
 				_globalCountdownText.Foreground = Brushes.White;
 				_globalCountdownText.Content = $"{_globalTimeLeft}s left (Paused)";	
 			}
 			else
 			{
-				_globalTimer.Start();
+				_timer.Start();
 				_globalButton.Content = "Pause Global";
 				_globalCountdownText.Content = $"{_globalTimeLeft}s left";	
 			}
@@ -98,7 +98,6 @@ namespace MUNManager.Views {
 
 		private void Back_Click(object? sender, RoutedEventArgs e)
 		{
-			_globalTimer.Dispose();
 			MainWindow.Instance.Content = new HomeView();
 		}
 	}
