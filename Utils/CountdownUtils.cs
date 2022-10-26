@@ -61,7 +61,7 @@ namespace MUNManager.Utils {
 		/// <param name="isAlert">Whether to color the view's title</param>
 		// ReSharper disable once InvalidXmlDocComment
 		public static void SetCountdownUIColor<T>(T countdownView, IBrush color, uint mode, bool isAlert = false)
-		where T : IDualCountdownView, ICountdownView
+		where T : ICountdownView, IDualCountdownView
 		{
 			void Update()
 			{
