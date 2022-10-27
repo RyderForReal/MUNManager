@@ -15,8 +15,8 @@ The application requires the latest version of .NET Core.
 - [x] Start moderated and unmoderated caucuses. The former has separate timers for the current speaker and the total duration.
 - [x] Partial whitelabeling support
     - Since MUNManager is still in early stages of development, we'd appreciate it if you left this field empty, but if you really want to whitelabel most of the application, you can set the "Event Name" field during event creation.
+- [x] Ask whether to yield to the chair or the next speaker
 - [ ] (High Priority) Branding
-- [ ] Ask whether to yield to the chair or the next speaker
 - [ ] Allow importing/exporting event configurations to configuration files
 - [ ] Roll calls
 - [ ] (Medium Priority) Group observer states during event creation
@@ -46,4 +46,4 @@ MUNManager is licensed under AGPL v3.0. See [LICENSE](LICENSE) for more informat
 <img src="Assets/README/Screenshots/Home.jpg">
 <img src="Assets/README/Screenshots/ModeratedCaucus.jpg">
 
-*The countdown bar is supposed to change colors when the timer is running out. The bug above will be fixed soon.*
+*The countdown bar is supposed to change colors when the timer is running out. The bug above has been fixed in recent releases.*
