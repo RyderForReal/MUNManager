@@ -26,6 +26,7 @@ namespace MUNManager.Views {
 		{
 			InitializeComponent();
 			Instance = this;
+			Timer.Start();
 			MainWindow.Instance.Title = $"{VolatileConfiguration.EventName} | Unmoderated Caucus";
 
 			GlobalTimeLeft = Instance._defaultGlobalTime;
@@ -34,7 +35,7 @@ namespace MUNManager.Views {
 			_globalButton = this.FindControl<Button>("GlobalStartStop");
 
 			GlobalProgressBar = this.FindControl<ProgressBar>("GlobalCountdownBar");
-			GlobalTimeLeft_Label = this.FindControl<Label>("GlobalTimeLeft_Label");
+			GlobalTimeLeft_Label = this.FindControl<Label>("GlobalCountdownText");
 			GlobalProgressBar.Maximum = _defaultGlobalTime;
 			GlobalProgressBar.Value = GlobalTimeLeft;
 			GlobalTimeLeft_Label.Content = $"{GlobalTimeLeft}s left";
@@ -47,17 +48,15 @@ namespace MUNManager.Views {
 			
 			GlobalTimeLeft--;
 			var color = CountdownUtils.DetermineColor(GlobalTimeLeft, _defaultGlobalTime);
+			
+			CountdownUtils.SetCountdownUIColor(this, color, Equals(color, VolatileConfiguration.CriticalBrush));
 
-			if (color == VolatileConfiguration.CriticalBrush)
-			{
-				CountdownUtils.SetCountdownUIColor(this, color, 1);
-			}
+			CountdownUtils.UpdateCountdownUI(this, GlobalTimeLeft == 0);
 			
 			if (GlobalTimeLeft == 0)
 			{
 				GlobalTimerRunning = false;
 			}
-			
 		}
 
 		private void InitializeComponent()
@@ -67,17 +66,19 @@ namespace MUNManager.Views {
 
 		private void AllStartStop_Click(object? sender, RoutedEventArgs e)
 		{
-			if (Timer.Enabled)
+			if (GlobalTimerRunning)
 			{
 				_globalButton.Content = "Start Global";
-				Timer.Stop();
-				GlobalCountdownBar.Foreground = Brushes.White;
-				GlobalTimeLeft_Label.Foreground = Brushes.White;
 				GlobalTimeLeft_Label.Content = $"{GlobalTimeLeft}s left (Paused)";	
+
+				GlobalTimerRunning = false;
+				
+				CountdownUtils.SetCountdownUIColor(this, Brushes.White);
 			}
 			else
 			{
-				Timer.Start();
+				GlobalTimerRunning = true;
+				
 				_globalButton.Content = "Pause Global";
 				GlobalTimeLeft_Label.Content = $"{GlobalTimeLeft}s left";	
 			}

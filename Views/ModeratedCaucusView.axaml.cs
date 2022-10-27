@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Timers;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -25,6 +28,7 @@ namespace MUNManager.Views {
 		public bool CurrentTimerRunning { get; set; }
 		public ProgressBar CurrentProgressBar { get; }
 		public Label CurrentTimeLeft_Label { get; }
+		public bool ActiveSpeaker { get; set; }
 
 		private readonly uint _defaultGlobalTime = HomeView.ModeratedDuration;
 		private readonly uint _defaultCurrentTime = HomeView.ModeratedTimeEach;
@@ -34,8 +38,9 @@ namespace MUNManager.Views {
 		private readonly ListBox _nextList;
 		private readonly ListBox _availableList;
 		private readonly Button _globalButton;
-		private readonly Button _currentButton;
+		public Button SpeakerStartStopButton { get; }
 		private readonly Button _skipButton;
+		private readonly Button _removeButton;
 		private readonly Button _yieldButton;
 
 		public ModeratedCaucusView()
@@ -50,7 +55,8 @@ namespace MUNManager.Views {
 			Timer.Start();
 			Timer.Elapsed += TimerOnElapsed;
 
-			_currentButton = this.FindControl<Button>("CurrentStartStop");
+			SpeakerStartStopButton = this.FindControl<Button>("CurrentStartStop");
+			_removeButton = this.FindControl<Button>("RemoveFromNext");
 			_skipButton = this.FindControl<Button>("SkipCurrentSpeaker");
 			_yieldButton = this.FindControl<Button>("YieldToNext");
 			_availableList = this.FindControl<ListBox>("AllCountries");
@@ -61,29 +67,44 @@ namespace MUNManager.Views {
 
 			_currentSpeaker.Text = _speakers.Count.Equals(0) ? "No speakers" : _speakers[0];
 
+			
 			GlobalProgressBar = this.FindControl<ProgressBar>("GlobalCountdownBar");
 			CurrentProgressBar = this.FindControl<ProgressBar>("CurrentCountdownBar");
-			GlobalTimeLeft_Label = this.FindControl<Label>("GlobalCountdownText");
-			CurrentTimeLeft_Label = this.FindControl<Label>("CurrentCountdownText");
 			GlobalProgressBar.Maximum = _defaultGlobalTime;
 			CurrentProgressBar.Maximum = _defaultCurrentTime;
 			GlobalProgressBar.Value = GlobalTimeLeft;
-			GlobalTimeLeft_Label.Content = $"{GlobalTimeLeft}s left";
 
-			// TODO: Remove item at index 0 for UI (Added to Git, remove soon)
+			GlobalTimeLeft_Label = this.FindControl<Label>("GlobalCountdownText");
+			CurrentTimeLeft_Label = this.FindControl<Label>("CurrentCountdownText");
+			GlobalTimeLeft_Label.Content = $"{GlobalTimeLeft}s left";
+			
 			_availableList.Items = AvailableSpeakers;
 			_nextList.Items = _speakers;
+			
+			CountdownUtils.SetCountdownUIColor(this, Brushes.White, 100);
 		}
 
+		private void UpdateSpeaker()
+		{
+			if (ActiveSpeaker)
+				return;
+			_currentSpeaker.Text = _speakers[0];
+			_speakers.RemoveAt(0);
+			
+			// TODO: Disable "remove from list" button if no entries
+			_skipButton.IsEnabled = _speakers.Count != 0;
+			
+			ActiveSpeaker = true;
+		}
 		private void TimerOnElapsed(object? sender, ElapsedEventArgs e)
 		{
 			if (GlobalTimerRunning)
 			{
 				if (GlobalTimeLeft > 0)
 					GlobalTimeLeft--;
-				CountdownUtils.UpdateCountdownUI(this, 1);
+				CountdownUtils.UpdateCountdownUI(this, 2);
 				var color = CountdownUtils.DetermineColor(GlobalTimeLeft, _defaultGlobalTime);
-				CountdownUtils.SetCountdownUIColor(this, CountdownUtils.DetermineColor(GlobalTimeLeft, _defaultGlobalTime), 1, Equals(color, VolatileConfiguration.CriticalBrush));
+				CountdownUtils.SetCountdownUIColor(this, color, 2, Equals(color, VolatileConfiguration.CriticalBrush));
 			}
 
 			// ReSharper disable once InvertIf
@@ -91,9 +112,12 @@ namespace MUNManager.Views {
 			{
 				if (CurrentTimeLeft > 0)
 					CurrentTimeLeft--;
-				CountdownUtils.UpdateCountdownUI(this, 2);
+				CountdownUtils.UpdateCountdownUI(this, 1);
 				var color = CountdownUtils.DetermineColor(CurrentTimeLeft, _defaultCurrentTime);
-				CountdownUtils.SetCountdownUIColor(this, CountdownUtils.DetermineColor(CurrentTimeLeft, _defaultCurrentTime), 2, Equals(color, VolatileConfiguration.CriticalBrush));
+				CountdownUtils.SetCountdownUIColor(this, color, 1, Equals(color, VolatileConfiguration.CriticalBrush));
+				if (CurrentTimeLeft != 0)
+					return;
+				ActiveSpeaker = false;
 			}
 		}
 
@@ -104,44 +128,48 @@ namespace MUNManager.Views {
 
 		private void CurrentStartStop_onClick(object? sender, RoutedEventArgs e)
 		{
-			if (_speakers.Count == 0 && !VolatileConfiguration.Debug) return;
-
+			ActiveSpeaker = true;
 			if (CurrentTimerRunning)
 			{
 				CurrentTimerRunning = false;
-				_currentButton.Content = "Start Current";
+				SpeakerStartStopButton.Content = "Start Current";
+				CountdownUtils.UpdateCountdownUI(this, 1, false, true);
 			}
 			else
 			{
 				CurrentTimerRunning = true;
 				GlobalTimerRunning = true;
-				_currentButton.Content = "Pause Current";
+				// TODO: Implement buttons in the Interface and use parameter to determine the text (start/stop).
+				SpeakerStartStopButton.Content = "Pause Current";
 				_globalButton.Content = "Pause Global";
-
+				CountdownUtils.UpdateCountdownUI(this, 100, false, false);
 			}
 		}
 
 		internal static void Reset()
 		{
+			Instance.ActiveSpeaker = false;
+			Instance.CurrentTimeLeft = Instance._defaultCurrentTime;
 			Dispatcher.UIThread.Post(() =>
 			{
-				Instance._currentButton.Content = "Start";
-				Instance.CurrentTimeLeft = Instance._defaultCurrentTime;
-				Instance.CurrentCountdownBar.Value = Instance._defaultCurrentTime;
-				Instance._currentSpeaker.Text = Instance._speakers.Count.Equals(0) ? "No speakers" : Instance._speakers[0];
+				Instance.SpeakerStartStopButton.Content = "Start";
+				Instance.CurrentTimerRunning = false;
+				Instance.CurrentProgressBar.Value = Instance._defaultCurrentTime;
 			});
 			if (Instance._speakers.Count == 0)
 			{
 				Dispatcher.UIThread.Post(() =>
 				{
-					Instance._currentButton.IsEnabled = false;
+					Instance._currentSpeaker.Text = "No speakers";
+					Instance.SpeakerStartStopButton.IsEnabled = false;
 					Instance._skipButton.IsEnabled = false;
 					Instance._yieldButton.IsEnabled = false;
 				});
-				return;
 			}
-
-			Instance._speakers.RemoveAt(0);
+			else
+			{
+				Instance.UpdateSpeaker();
+			}
 		}
 
 		private void SkipCurrentSpeaker_Click(object? sender, RoutedEventArgs e)
@@ -154,14 +182,11 @@ namespace MUNManager.Views {
 			if (GlobalTimerRunning)
 			{
 				_globalButton.Content = "Start Global";
-				_currentButton.Content = "Start Current";
+				SpeakerStartStopButton.Content = "Start Current";
 				CurrentTimerRunning = false;
 				GlobalTimerRunning = false;
-				GlobalProgressBar.Foreground = Brushes.White;
-				GlobalCountdownText.Foreground = Brushes.White;
-				CurrentProgressBar.Foreground = Brushes.White;
-				CurrentCountdownText.Foreground = Brushes.White;
-				GlobalCountdownText.Content = $"{GlobalTimeLeft}s left (Paused)";
+				CountdownUtils.SetCountdownUIColor(this, Brushes.White, 100);
+				GlobalTimeLeft_Label.Content = $"{GlobalTimeLeft}s left (Paused)";
 			}
 			else
 			{
@@ -169,12 +194,10 @@ namespace MUNManager.Views {
 				if (!_currentSpeaker.Text.Equals("No speakers"))
 				{
 					CurrentTimerRunning = true;
-					_currentButton.Content = "Pause Current";
-					CurrentCountdownText.Content = $"{CurrentTimeLeft}s left";
+					SpeakerStartStopButton.Content = "Pause Current";
 				}
-
 				GlobalTimerRunning = true;
-				GlobalCountdownText.Content = $"{GlobalTimeLeft}s left";
+				CountdownUtils.UpdateCountdownUI(this, 100);
 			}
 		}
 
@@ -185,17 +208,14 @@ namespace MUNManager.Views {
 			{
 				Dispatcher.UIThread.Post(() =>
 				{
-					_currentButton.IsEnabled = true;
+					SpeakerStartStopButton.IsEnabled = true;
 					_skipButton.IsEnabled = true;
 					_yieldButton.IsEnabled = true;
 				});
 			}
-
 			_speakers.Add(_availableList.SelectedItems[0].ToString());
-
-			if (_speakers.Count == 1) { _currentSpeaker.Text = _speakers[0]; }
+			UpdateSpeaker();
 		}
-
 		private void Remove_Click(object? sender, RoutedEventArgs e)
 		{
 			if (_nextList.SelectedItems.Count == 0) return;

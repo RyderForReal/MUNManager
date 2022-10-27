@@ -22,5 +22,9 @@ namespace MUNManager.Views {
 		ProgressBar CurrentProgressBar { get; }
 		// ReSharper disable once InconsistentNaming
 		Label CurrentTimeLeft_Label { get; }
+		
+		Button SpeakerStartStopButton { get; }
+		
+		bool ActiveSpeaker { get; set; }
 	}
 }

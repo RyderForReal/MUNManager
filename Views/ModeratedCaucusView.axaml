@@ -16,7 +16,7 @@
             <StackPanel Grid.Column="0" HorizontalAlignment="Right" Margin="0 0 2 0">
             <Label HorizontalAlignment="Right">Current Speaker</Label>
             <TextBlock Name="CurrentSpeaker" HorizontalAlignment="Right" FontSize="20"/>
-            <Label Name="CurrentCountdownText" HorizontalAlignment="Right"/>
+            <Label Name="CurrentCountdownText" HorizontalAlignment="Right" Content="Please add a speaker and start the timer."/>
             <ProgressBar Name="CurrentCountdownBar" Width="300" HorizontalAlignment="Right"/>
             </StackPanel>
         <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="2 0 0 0">
@@ -28,7 +28,7 @@
             <Button Click="CurrentStartStop_onClick" Name="CurrentStartStop" IsEnabled="False" HorizontalAlignment="Right">Start Current</Button>
             <Button Click="Yield_Click" Name="YieldToNext" IsEnabled="False">Yield</Button>
             <Button Click="SkipCurrentSpeaker_Click" IsEnabled="False" HorizontalAlignment="Right" Name="SkipCurrentSpeaker">Skip Current</Button>
-            <Button Click="Remove_Click">Remove from List</Button>
+            <Button Click="Remove_Click" Name="RemoveFromNext">Remove from List</Button>
         </StackPanel>
     </StackPanel>
         <StackPanel VerticalAlignment="Bottom">
