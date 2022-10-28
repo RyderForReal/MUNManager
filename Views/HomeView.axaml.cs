@@ -24,6 +24,8 @@ namespace MUNManager.Views {
 			MainWindow.Instance.Title = VolatileConfiguration.EventName + " | Home";
 			var dynamicEventName = this.FindControl<TextBlock>("DynEventName");
 			dynamicEventName.Text = VolatileConfiguration.EventName;
+			
+			this.FindControl<Button>("RollCall").IsVisible = VolatileConfiguration.Debug;
 
 			_moderatedTimeEach = this.FindControl<NumericUpDown>("ModeratedTimePerSpeakerInput");
 			_moderatedTime = this.FindControl<NumericUpDown>("ModeratedDurationInput");
@@ -58,6 +60,11 @@ namespace MUNManager.Views {
 			
 			UnmoderatedDuration = (uint)_unmoderatedTime.Value;
 			MainWindow.Instance.Content = new UnmoderatedCaucusView();
+		}
+
+		private void RollCall_Click(object? sender, RoutedEventArgs e)
+		{
+			MainWindow.Instance.Content = new RollCallView();
 		}
 	}
 }

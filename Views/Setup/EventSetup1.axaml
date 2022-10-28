@@ -14,6 +14,9 @@
                 <ToggleSwitch Name="OpeningSpeeches" IsChecked="True"/>
                 <Label>Opening Speech Duration (seconds)</Label>
                 <NumericUpDown Minimum="0" Maximum="1000" Value="120" Name="OpeningSpeechDuration"/>
+                <Label>Behavior when absent in Roll Call</Label>
+                <RadioButton GroupName="AbsentInRollCall">Show</RadioButton>
+                <RadioButton GroupName="AbsentInRollCall">Hide</RadioButton>
                 <!--
                 <Label>Default Speech Duration in Moderated Caucus (seconds)</Label>
                 <NumericUpDown Minimum="0" Maximum="1000" Value="30" Name="SpeechDuration" />
