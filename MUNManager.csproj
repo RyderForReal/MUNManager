@@ -14,6 +14,7 @@
         <RepositoryUrl>https://github.com/RyderForReal/MUNManager</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageIcon>Assets\Branding\MUNManager Icon.png</PackageIcon>
     </PropertyGroup>
     <ItemGroup>
         <None Remove=".gitignore" />
@@ -57,5 +58,12 @@
       <Compile Update="Views\Setup\CountrySelection.axaml.cs">
         <DependentUpon>CountrySelection.axaml</DependentUpon>
       </Compile>
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="Assets\Branding\MUNManager-Icon.png" />
+      <AvaloniaResource Include="Assets\Branding\MUNManager-Icon.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </AvaloniaResource>
     </ItemGroup>
 </Project>
