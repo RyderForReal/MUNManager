@@ -93,7 +93,8 @@ namespace MUNManager.Views {
 			
 			// TODO: Disable "remove from list" button if no entries
 			_skipButton.IsEnabled = _speakers.Count != 0;
-			
+			_yieldButton.IsEnabled = _speakers.Count != 0;
+
 			ActiveSpeaker = true;
 		}
 		private void TimerOnElapsed(object? sender, ElapsedEventArgs e)
@@ -102,7 +103,7 @@ namespace MUNManager.Views {
 			{
 				if (GlobalTimeLeft > 0)
 					GlobalTimeLeft--;
-				CountdownUtils.UpdateCountdownUI(this, 2);
+				CountdownUtils.UpdateCountdownUI(this, 2, GlobalTimeLeft == 0);
 				var color = CountdownUtils.DetermineColor(GlobalTimeLeft, _defaultGlobalTime);
 				CountdownUtils.SetCountdownUIColor(this, color, 2, Equals(color, VolatileConfiguration.CriticalBrush));
 			}
@@ -112,7 +113,7 @@ namespace MUNManager.Views {
 			{
 				if (CurrentTimeLeft > 0)
 					CurrentTimeLeft--;
-				CountdownUtils.UpdateCountdownUI(this, 1);
+				CountdownUtils.UpdateCountdownUI(this, 1, CurrentTimeLeft == 0);
 				var color = CountdownUtils.DetermineColor(CurrentTimeLeft, _defaultCurrentTime);
 				CountdownUtils.SetCountdownUIColor(this, color, 1, Equals(color, VolatileConfiguration.CriticalBrush));
 				if (CurrentTimeLeft != 0)
@@ -204,17 +205,24 @@ namespace MUNManager.Views {
 		private void AddToNextUp(object? sender, RoutedEventArgs e)
 		{
 			if (_availableList.SelectedItems.Count == 0) return;
-			if (_speakers.Count == 0)
-			{
-				Dispatcher.UIThread.Post(() =>
-				{
-					SpeakerStartStopButton.IsEnabled = true;
-					_skipButton.IsEnabled = true;
-					_yieldButton.IsEnabled = true;
-				});
-			}
 			_speakers.Add(_availableList.SelectedItems[0].ToString());
 			UpdateSpeaker();
+			switch (_speakers.Count)
+			{
+				case 0:
+					Dispatcher.UIThread.Post(() =>
+					{
+						SpeakerStartStopButton.IsEnabled = true;
+					});
+					break;
+				case >= 1:
+					Dispatcher.UIThread.Post(() =>
+					{
+						_skipButton.IsEnabled = true;
+						_yieldButton.IsEnabled = true;
+					});
+					break;
+			}
 		}
 		private void Remove_Click(object? sender, RoutedEventArgs e)
 		{

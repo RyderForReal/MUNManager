@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MUNManager.Views.YieldDialog"
-        Title="MUNManager | Yielding" MaxWidth="300" MinWidth="300" MaxHeight="75" MinHeight="75">
+        Title="MUNManager | Yielding" MaxWidth="300" MaxHeight="300" MinWidth="75" MinHeight="75" Icon="Assets/Branding/MUNManager-Icon.png">
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel>
                         <TextBlock Classes="SubTitle">Yield remaining Time</TextBlock>
