@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Avalonia.Media;
 
 namespace MUNManager.Configuration {
+	[Obsolete("This class will be deprecated in favor of Config.NET's memory configuration provider soon.")]
 	public static class VolatileConfiguration {
 		public static string EventName { get; set; } = "MUNManager";
 		public static List<string>? Participants { get; set; }

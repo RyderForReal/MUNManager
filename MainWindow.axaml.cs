@@ -18,6 +18,10 @@ namespace MUNManager
             Instance = this;
 
             VolatileConfiguration.Debug = IfUtils.Contains(args, "-d", "--debug");
+            Instance.Content = IfUtils.Contains(args, "-dv", "--debugView") switch
+            {
+                true => new DebugView()
+            };
             Instance.Content = IfUtils.Contains(args, "-s", "--skipSetup") switch
             {
                 true  => new HomeView(),

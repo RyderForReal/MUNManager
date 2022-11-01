@@ -10,7 +10,7 @@
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                     <TextBlock>Would you like to save this configuration?</TextBlock> 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
-                    <Button Margin="0 0 2 0">Yes</Button>
+                    <Button Margin="0 0 2 0" Click="Save_Click">Yes</Button>
                     <Button Click="ContinueVolatile" Margin="2 0 0 0">No</Button>
                     </StackPanel>
                 </StackPanel>

@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Config.Net;
 using MUNManager.Configuration;
 
 namespace MUNManager.Views.Setup {
@@ -29,6 +30,20 @@ namespace MUNManager.Views.Setup {
 			{
 				MainWindow.Instance.Content = new HomeView();
 			}
+			Close();
+		}
+
+		private void Save_Click(object? sender, RoutedEventArgs e)
+		{
+			if (!VolatileConfiguration.Debug) return;
+			
+			var eventConfig = new ConfigurationBuilder<IEventConfiguration>()
+				.UseIniFile("testconfig.ini")
+				.Build();
+			eventConfig.SetParticipants(VolatileConfiguration.Participants);
+			eventConfig.EventName = VolatileConfiguration.EventName;
+			eventConfig.DoOpeningSpeeches = VolatileConfiguration.DoOpeningSpeeches;
+			eventConfig.OpeningSpeechDuration = VolatileConfiguration.OpeningSpeechDuration;
 			Close();
 		}
 	}
