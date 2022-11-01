@@ -36,15 +36,17 @@ namespace MUNManager.Views {
 		private readonly TextBlock _currentSpeaker;
 		public TextBlock ViewTitle { get; }
 		private readonly ListBox _nextList;
-		private readonly ListBox _availableList;
+		private readonly AutoCompleteBox _availableList;
 		private readonly Button _globalButton;
 		public Button SpeakerStartStopButton { get; }
 		private readonly Button _skipButton;
 		private readonly Button _removeButton;
 		private readonly Button _yieldButton;
+		
+		private string AddSpeakerTooltip { get; set; }
 
 		public ModeratedCaucusView()
-		{
+		{ 
 			InitializeComponent();
 			Instance = this;
 			MainWindow.Instance.Title = $"{VolatileConfiguration.EventName} | Moderated Caucus";
@@ -59,7 +61,7 @@ namespace MUNManager.Views {
 			_removeButton = this.FindControl<Button>("RemoveFromNext");
 			_skipButton = this.FindControl<Button>("SkipCurrentSpeaker");
 			_yieldButton = this.FindControl<Button>("YieldToNext");
-			_availableList = this.FindControl<ListBox>("AllCountries");
+			_availableList = this.FindControl<AutoCompleteBox>("AllCountries");
 			ViewTitle = this.FindControl<TextBlock>("ViewTitleElement");
 			_currentSpeaker = this.FindControl<TextBlock>("CurrentSpeaker");
 			_nextList = this.FindControl<ListBox>("NextCountries");
@@ -80,7 +82,9 @@ namespace MUNManager.Views {
 			
 			_availableList.Items = AvailableSpeakers;
 			_nextList.Items = _speakers;
-			
+
+			this.FindControl<TextBlock>("AllAvailableSpeakersInfo").Text = $"Available: {string.Join(", ", AvailableSpeakers)}";
+
 			CountdownUtils.SetCountdownUIColor(this, Brushes.White, 100);
 		}
 
@@ -204,8 +208,8 @@ namespace MUNManager.Views {
 
 		private void AddToNextUp(object? sender, RoutedEventArgs e)
 		{
-			if (_availableList.SelectedItems.Count == 0) return;
-			_speakers.Add(_availableList.SelectedItems[0].ToString());
+			if (_availableList.SelectedItem == null) return;
+			_speakers.Add(_availableList.SelectedItem.ToString());
 			UpdateSpeaker();
 			switch (_speakers.Count)
 			{

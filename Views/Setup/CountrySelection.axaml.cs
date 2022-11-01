@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -13,21 +14,19 @@ using MUNManager.Utils;
  */
 namespace MUNManager.Views.Setup {
 	public partial class CountrySelection : UserControl {
-		private static ObservableCollection<string> _availableCountries = null!;
-		private static ObservableCollection<string> _selectedCountries = null!;
-		private static ListBox _availableCountriesListBox = null!;
+		private static readonly ObservableCollection<string> AvailableCountries = new(Country.AllString());
+		private static readonly ObservableCollection<string> SelectedCountries = new();
+		//private static ListBox _availableCountriesListBox = null!;
 		private static ListBox _selectedCountriesListBox = null!;
+		private static AutoCompleteBox _searchBox = null!;
 		public CountrySelection()
 		{
 			InitializeComponent();
-			_selectedCountries = new ObservableCollection<string>();
-			_availableCountries = new ObservableCollection<string>(Country.AllString());
-			
-			_availableCountriesListBox = this.FindControl<ListBox>("Available");
+			_searchBox = this.FindControl<AutoCompleteBox>("Countries");
 			_selectedCountriesListBox = this.FindControl<ListBox>("Selected");
 
-			_availableCountriesListBox.Items = _availableCountries;
-			_selectedCountriesListBox.Items = _selectedCountries;
+			_searchBox.Items = AvailableCountries;
+			_selectedCountriesListBox.Items = SelectedCountries;
 
 		}
 
@@ -45,53 +44,54 @@ namespace MUNManager.Views.Setup {
 		{
 			if (_selectedCountriesListBox.SelectedItems.Count == 0) return;
 
-			_availableCountries.Add(_selectedCountriesListBox.SelectedItems[0]?.ToString()!);
-			_selectedCountries.Remove(_selectedCountriesListBox.SelectedItems[0]?.ToString()!);
+			AvailableCountries.Add(_selectedCountriesListBox.SelectedItems[0]?.ToString()!);
+			SelectedCountries.Remove(_selectedCountriesListBox.SelectedItems[0]?.ToString()!);
 			
-			var tempSorted1 = new List<string>(_availableCountries);
+			var tempSorted1 = new List<string>(AvailableCountries);
 			tempSorted1.Sort();
 
 			for (var i = 0; i < tempSorted1.Count; i++)
 			{
-				_availableCountries.Move(_availableCountries.IndexOf(tempSorted1[i]), i);
+				AvailableCountries.Move(AvailableCountries.IndexOf(tempSorted1[i]), i);
 			}
-			var tempSorted2 = new List<string>(_selectedCountries);
+			var tempSorted2 = new List<string>(SelectedCountries);
 			tempSorted2.Sort();
 
 			for (var i = 0; i < tempSorted2.Count; i++)
 			{
-				_selectedCountries.Move(_selectedCountries.IndexOf(tempSorted2[i]), i);
+				SelectedCountries.Move(SelectedCountries.IndexOf(tempSorted2[i]), i);
 			}
 		}
 
 		private void AddToSelected(object? sender, RoutedEventArgs e)
 		{
-			if (_availableCountriesListBox.SelectedItems.Count == 0) return;
+			// TODO: Add error message
+			if (_searchBox.SelectedItem == null || SelectedCountries.Contains(_searchBox.SelectedItem.ToString())) return;
 
-			_selectedCountries.Add(_availableCountriesListBox.SelectedItems[0].ToString()!);
-			_availableCountries.Remove(_availableCountriesListBox.SelectedItems[0].ToString()!);
+			SelectedCountries.Add(_searchBox.SelectedItem.ToString()!);
+			AvailableCountries.Remove(_searchBox.SelectedItem.ToString()!);
 			
-			var tempSorted1 = new List<string>(_availableCountries);
+			var tempSorted1 = new List<string>(AvailableCountries);
 			tempSorted1.Sort();
 
 			for (var i = 0; i < tempSorted1.Count; i++)
 			{
-				_availableCountries.Move(_availableCountries.IndexOf(tempSorted1[i]), i);
+				AvailableCountries.Move(AvailableCountries.IndexOf(tempSorted1[i]), i);
 			}
-			var tempSorted2 = new List<string>(_selectedCountries);
+			var tempSorted2 = new List<string>(SelectedCountries);
 			tempSorted2.Sort();
 
 			for (var i = 0; i < tempSorted2.Count; i++)
 			{
-				_selectedCountries.Move(_selectedCountries.IndexOf(tempSorted2[i]), i);
+				SelectedCountries.Move(SelectedCountries.IndexOf(tempSorted2[i]), i);
 			}
 		}
 
 		private void Finalize(object? sender, RoutedEventArgs e)
 		{
 			// Add error message later
-			if (_selectedCountries.Count == 0/*&& !VolatileConstants.Debug*/) return;
-			VolatileConfiguration.Participants = _selectedCountries.ToList();
+			if (SelectedCountries.Count == 0/*&& !VolatileConstants.Debug*/) return;
+			VolatileConfiguration.Participants = SelectedCountries.ToList();
 			new SaveDialog().Show();
 		}
 	}

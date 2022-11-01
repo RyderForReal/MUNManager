@@ -11,7 +11,9 @@
         <Grid ColumnDefinitions="* *">
             <StackPanel Grid.Column="0" HorizontalAlignment="Right" Margin="0 0 2 0">
                 <Label>Available</Label>
-                <ListBox Name="Available" MinWidth="350" Height="200" MaxHeight="200" SelectionMode="Single"/>
+                <!-- TODO: Make a documentation page with the list of countries -->
+                <AutoCompleteBox Name="Countries" MinWidth="350"/>
+                <!--<ListBox Name="Available" MinWidth="350" Height="200" MaxHeight="200" SelectionMode="Single"/>-->
                 <Button Click="AddToSelected" Margin="0 2 0 0">Add Selected</Button>
             </StackPanel>
             

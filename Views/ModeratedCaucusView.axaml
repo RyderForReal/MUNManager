@@ -32,8 +32,9 @@
         </StackPanel>
     </StackPanel>
         <StackPanel VerticalAlignment="Bottom">
-            <Label>Available Countries</Label>
-            <ListBox Name="AllCountries"/>
+            <Label Name="AddSpeakerLabel">Add a Speaker</Label>
+            <TextBlock Name="AllAvailableSpeakersInfo" FontSize="10"/>
+            <AutoCompleteBox Name="AllCountries"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
                 <Button Click="AddToNextUp">Add Speaker</Button>
                 <Button Click="AllStartStop_Click" Name="GlobalStartStop">Start Global</Button>
