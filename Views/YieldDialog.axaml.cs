@@ -18,7 +18,7 @@ namespace MUNManager.Views {
 #if DEBUG
 			this.AttachDevTools();
 #endif
-			Title = $"{VolatileConfiguration.EventName} | Yield remaining time";
+			Title = $"{MainWindow.Instance.EventConfiguration.EventName} | Yield remaining time";
 
 			ModeratedCaucusView.Instance.CurrentTimerRunning = false;
 			ModeratedCaucusView.Instance.GlobalTimerRunning = false;
@@ -34,7 +34,7 @@ namespace MUNManager.Views {
 			var remainingTime = ModeratedCaucusView.Instance.CurrentTimeLeft;
 			ModeratedCaucusView.Reset();
 			ModeratedCaucusView.Instance.CurrentTimeLeft += remainingTime;
-			if (VolatileConfiguration.Debug)
+			if (MainWindow.Instance.EventConfiguration.Debug)
 				Console.WriteLine($"{ModeratedCaucusView.Instance.CurrentTimeLeft} seconds remaining (added {remainingTime} seconds)");
 			CountdownUtils.UpdateCountdownUI(ModeratedCaucusView.Instance, 1);
 			CountdownUtils.SetCountdownUIColor(ModeratedCaucusView.Instance, Brushes.White, 1);

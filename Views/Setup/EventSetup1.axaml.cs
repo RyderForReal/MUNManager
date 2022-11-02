@@ -26,17 +26,14 @@ namespace MUNManager.Views.Setup {
 			{
 				eventName.Text = "MUNManager";
 			}
-			VolatileConfiguration.EventName = eventName.Text;
-			if (VolatileConfiguration.EventName != "MUNManager")
+			MainWindow.Instance.EventConfiguration.EventName = eventName.Text;
+			if (MainWindow.Instance.EventConfiguration.EventName != "MUNManager")
 			{
-				MainWindow.Instance.Title = $"{VolatileConfiguration.EventName} | MUNManager";
+				MainWindow.Instance.Title = $"{MainWindow.Instance.EventConfiguration.EventName} | MUNManager";
 			}
-			
-			VolatileConfiguration.DoOpeningSpeeches = _doOpeningSpeeches.IsChecked!.Value;
-			VolatileConfiguration.OpeningSpeechDuration = (uint)this.FindControl<NumericUpDown>("OpeningSpeechDuration").Value;
-			//VolatileConfiguration.SpeechDuration = (uint)this.FindControl<NumericUpDown>("SpeechDuration").Value;
-			//VolatileConfiguration.CaucusDuration = (uint)this.FindControl<NumericUpDown>("CaucusDuration").Value;
-			
+			MainWindow.Instance.EventConfiguration.DoOpeningSpeeches = _doOpeningSpeeches.IsChecked!.Value;
+			MainWindow.Instance.EventConfiguration.OpeningSpeechDuration = (uint)this.FindControl<NumericUpDown>("OpeningSpeechDuration").Value;
+
 			MainWindow.Instance.Content = new CountrySelection();
 		}
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace MUNManager.Views {
 
 		internal static ModeratedCaucusView Instance = null!;
 		private readonly ObservableCollection<string> _speakers = new();
-		private static readonly ObservableCollection<string> AvailableSpeakers = new(VolatileConfiguration.Participants ?? new() { "No participants" });
+		private static readonly ObservableCollection<string> AvailableSpeakers = new(MainWindow.Instance.EventConfiguration.Participants.Split('-'));
 
 		public Timer Timer { get; } = new(1000);
 		public uint GlobalTimeLeft { get; set; }
@@ -42,14 +43,12 @@ namespace MUNManager.Views {
 		private readonly Button _skipButton;
 		private readonly Button _removeButton;
 		private readonly Button _yieldButton;
-		
-		private string AddSpeakerTooltip { get; set; }
 
 		public ModeratedCaucusView()
-		{ 
+		{
 			InitializeComponent();
 			Instance = this;
-			MainWindow.Instance.Title = $"{VolatileConfiguration.EventName} | Moderated Caucus";
+			MainWindow.Instance.Title = $"{MainWindow.Instance.EventConfiguration.EventName} | Moderated Caucus";
 
 			CurrentTimeLeft = _defaultCurrentTime;
 			GlobalTimeLeft = _defaultGlobalTime;

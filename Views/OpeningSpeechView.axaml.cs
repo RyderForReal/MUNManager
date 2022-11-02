@@ -13,11 +13,11 @@ namespace MUNManager.Views {
 		private static TextBlock _progressText = null!;
 		
 		private static readonly Timer Timer = new(1000);
-		private static uint _timeLeft = VolatileConfiguration.OpeningSpeechDuration;
-		private static readonly uint TimeDefault = VolatileConfiguration.OpeningSpeechDuration;
+		private static uint _timeLeft = MainWindow.Instance.EventConfiguration.OpeningSpeechDuration;
+		private static readonly uint TimeDefault = MainWindow.Instance.EventConfiguration.OpeningSpeechDuration;
 
 		private static string _currentCountry = string.Empty;
-		private static readonly List<string> NextUp = new(VolatileConfiguration.Participants ?? new List<string> { "No countries selected" });
+		private static readonly List<string> NextUp = new(MainWindow.Instance.EventConfiguration.Participants.Split('-'));
 		
 		private static Button _startStop = null!;
 		private static TextBlock _currentCountryText = null!;
@@ -25,7 +25,7 @@ namespace MUNManager.Views {
 		public OpeningSpeechView()
 		{
 			InitializeComponent();
-			MainWindow.Instance.Title = $"{VolatileConfiguration.EventName} | Opening Speeches";
+			MainWindow.Instance.Title = $"{MainWindow.Instance.EventConfiguration.EventName} | Opening Speeches";
 			
 			_currentCountry = NextUp[0];
 			_currentCountryText = this.FindControl<TextBlock>("CurrentlySpeakingName");

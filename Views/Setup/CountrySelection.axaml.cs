@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -16,7 +17,6 @@ namespace MUNManager.Views.Setup {
 	public partial class CountrySelection : UserControl {
 		private static readonly ObservableCollection<string> AvailableCountries = new(Country.AllString());
 		private static readonly ObservableCollection<string> SelectedCountries = new();
-		//private static ListBox _availableCountriesListBox = null!;
 		private static ListBox _selectedCountriesListBox = null!;
 		private static AutoCompleteBox _searchBox = null!;
 		public CountrySelection()
@@ -89,9 +89,10 @@ namespace MUNManager.Views.Setup {
 
 		private void Finalize(object? sender, RoutedEventArgs e)
 		{
-			// Add error message later
-			if (SelectedCountries.Count == 0/*&& !VolatileConstants.Debug*/) return;
-			VolatileConfiguration.Participants = SelectedCountries.ToList();
+			// TODO: Add error message later
+			if (SelectedCountries.Count == 0) return;
+			
+			MainWindow.Instance.EventConfiguration.Participants = string.Join('-', SelectedCountries);
 			new SaveDialog().Show();
 		}
 	}

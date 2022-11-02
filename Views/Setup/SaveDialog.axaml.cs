@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -7,12 +9,14 @@ using MUNManager.Configuration;
 
 namespace MUNManager.Views.Setup {
 	public partial class SaveDialog : Window {
+		private static SaveDialog _instance;
 		public SaveDialog()
 		{
 			InitializeComponent();
 #if DEBUG
 			this.AttachDevTools();
 #endif
+			_instance = this;
 		}
 
 		private void InitializeComponent()
@@ -22,7 +26,7 @@ namespace MUNManager.Views.Setup {
 
 		private void ContinueVolatile(object? sender, RoutedEventArgs e)
 		{
-			if (VolatileConfiguration.DoOpeningSpeeches)
+			if (MainWindow.Instance.EventConfiguration.DoOpeningSpeeches)
 			{
 				MainWindow.Instance.Content = new OpeningSpeechView();
 			}
@@ -33,17 +37,27 @@ namespace MUNManager.Views.Setup {
 			Close();
 		}
 
-		private void Save_Click(object? sender, RoutedEventArgs e)
+		private async void Save_Click(object? sender, RoutedEventArgs e)
 		{
-			if (!VolatileConfiguration.Debug) return;
-			
-			var eventConfig = new ConfigurationBuilder<IEventConfiguration>()
-				.UseIniFile("testconfig.ini")
+			var fd = new SaveFileDialog
+			{
+				Title = "Select a configuration file",
+				DefaultExtension = "ini",
+				InitialFileName = "EventConfiguration.ini",
+			};
+			var result = await fd.ShowAsync(_instance);
+			if (result == null) return;
+
+			var fsConfig = new ConfigurationBuilder<IEventConfiguration>()
+				.UseIniFile(result)
 				.Build();
-			eventConfig.SetParticipants(VolatileConfiguration.Participants);
-			eventConfig.EventName = VolatileConfiguration.EventName;
-			eventConfig.DoOpeningSpeeches = VolatileConfiguration.DoOpeningSpeeches;
-			eventConfig.OpeningSpeechDuration = VolatileConfiguration.OpeningSpeechDuration;
+			fsConfig.Debug = MainWindow.Instance.EventConfiguration.Debug;
+			fsConfig.Participants = string.Join('-', MainWindow.Instance.EventConfiguration.Participants.Split('-'));
+			fsConfig.EventName = MainWindow.Instance.EventConfiguration.EventName.Replace(';', '-');
+			fsConfig.DoOpeningSpeeches = MainWindow.Instance.EventConfiguration.DoOpeningSpeeches;
+			fsConfig.HideIfAbsent = MainWindow.Instance.EventConfiguration.HideIfAbsent;
+			fsConfig.OpeningSpeechDuration = MainWindow.Instance.EventConfiguration.OpeningSpeechDuration;
+			MainWindow.Instance.Content = new HomeView();
 			Close();
 		}
 	}

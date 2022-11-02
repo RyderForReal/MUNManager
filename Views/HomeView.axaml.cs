@@ -21,11 +21,11 @@ namespace MUNManager.Views {
 		{
 			InitializeComponent();
 			Instance = this;
-			MainWindow.Instance.Title = VolatileConfiguration.EventName + " | Home";
+			MainWindow.Instance.Title = MainWindow.Instance.EventConfiguration.EventName + " | Home";
 			var dynamicEventName = this.FindControl<TextBlock>("DynEventName");
-			dynamicEventName.Text = VolatileConfiguration.EventName;
+			dynamicEventName.Text = MainWindow.Instance.EventConfiguration.EventName;
 			
-			this.FindControl<Button>("RollCall").IsVisible = VolatileConfiguration.Debug;
+			this.FindControl<Button>("RollCall").IsVisible = MainWindow.Instance.EventConfiguration.Debug;
 
 			_moderatedTimeEach = this.FindControl<NumericUpDown>("ModeratedTimePerSpeakerInput");
 			_moderatedTime = this.FindControl<NumericUpDown>("ModeratedDurationInput");
@@ -47,7 +47,7 @@ namespace MUNManager.Views {
 		
 		private void Moderated_Click(object? sender, RoutedEventArgs e)
 		{
-			if ((_moderatedTime.Value < Constants.ModeratedCaucusMinimumDuration || _moderatedTimeEach.Value < Constants.ModeratedCaucusMinimumDurationEach) && !VolatileConfiguration.Debug) return;
+			if ((_moderatedTime.Value < Constants.ModeratedCaucusMinimumDuration || _moderatedTimeEach.Value < Constants.ModeratedCaucusMinimumDurationEach) && !MainWindow.Instance.EventConfiguration.Debug) return;
 			
 			ModeratedDuration = (uint)_moderatedTime.Value;
 			ModeratedTimeEach = (uint)_moderatedTimeEach.Value;
@@ -56,7 +56,7 @@ namespace MUNManager.Views {
 
 		private void Unmoderated_Click(object? sender, RoutedEventArgs e)
 		{
-			if (_unmoderatedTime.Value < Constants.UnmoderatedCaucusMinimumDuration && !VolatileConfiguration.Debug) return;
+			if (_unmoderatedTime.Value < Constants.UnmoderatedCaucusMinimumDuration && !MainWindow.Instance.EventConfiguration.Debug) return;
 			
 			UnmoderatedDuration = (uint)_unmoderatedTime.Value;
 			MainWindow.Instance.Content = new UnmoderatedCaucusView();

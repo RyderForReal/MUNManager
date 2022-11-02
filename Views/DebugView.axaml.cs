@@ -4,6 +4,8 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Config.Net;
+using MUNManager.Configuration;
 
 namespace MUNManager.Views {
 	public partial class DebugView : UserControl {

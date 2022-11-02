@@ -4,21 +4,8 @@ using System.Collections.Generic;
 using Avalonia.Media;
 
 namespace MUNManager.Configuration {
-	[Obsolete("This class will be deprecated in favor of Config.NET's memory configuration provider soon.")]
+	[Obsolete("This class is in the process of being replaced.")]
 	public static class VolatileConfiguration {
-		public static string EventName { get; set; } = "MUNManager";
-		public static List<string>? Participants { get; set; }
-
-		public static uint OpeningSpeechDuration { get; set; } = 120;
-		
-		// TODO: Implement SpeechDuration
-		public static uint SpeechDuration { get; set; } = 60;
-		public static uint CaucusDuration { get; set; } = 240;
-
-		public static bool DoOpeningSpeeches { get; set; } = true;
-		public static bool Debug { get; set;  } = false;
-		public static List<string> SpeechTypes { get; } = new() { "Moderated Caucus", "Unmoderated Caucus" };
-		
 		// WIP Implementation
 		// ReSharper disable once InconsistentNaming
 		public static IBrush OKBrush { get; set; } = new SolidColorBrush(Colors.Green);

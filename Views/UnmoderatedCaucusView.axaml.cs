@@ -27,7 +27,7 @@ namespace MUNManager.Views {
 			InitializeComponent();
 			Instance = this;
 			Timer.Start();
-			MainWindow.Instance.Title = $"{VolatileConfiguration.EventName} | Unmoderated Caucus";
+			MainWindow.Instance.Title = $"{MainWindow.Instance.EventConfiguration.EventName} | Unmoderated Caucus";
 
 			GlobalTimeLeft = Instance._defaultGlobalTime;
 			
