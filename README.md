@@ -16,8 +16,8 @@ The application requires the latest version of .NET Core.
 - [x] Partial whitelabeling support
     - Since MUNManager is still in early stages of development, we'd appreciate it if you left this field empty, but if you really want to whitelabel most of the application, you can set the "Event Name" field during event creation.
 - [x] Ask whether to yield to the chair or the next speaker
-- [ ] (High Priority) Branding
-- [ ] Allow importing/exporting event configurations to configuration files
+- [x] (High Priority) Branding
+- [x] Allow importing/exporting event configurations to configuration files
 - [ ] Roll calls
 - [ ] (Medium Priority) Group observer states during event creation
 - [ ] (Low Priority) Flags for delegations
