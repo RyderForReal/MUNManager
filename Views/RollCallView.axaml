@@ -7,8 +7,20 @@
     <StackPanel>
         <TextBlock Classes="SetupTitle" Name="ViewTitleElement">Roll Call</TextBlock>
         <TextBlock Classes="SubTitle" Name="ViewSubtitleElement">Please select the countries that are present in the committee.</TextBlock>
-        
-        <StackPanel>
+        <Grid ColumnDefinitions="* *">
+            <StackPanel Grid.Column="0" HorizontalAlignment="Right" MinHeight="150">
+                <Label HorizontalAlignment="Right">Absent</Label>
+                <ListBox Name="AbsentCountries" HorizontalAlignment="Right" SelectionMode="Single" MaxHeight="300"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" MinHeight="150">
+                <Label>Present</Label>
+                <ListBox Name="PresentCountries" SelectionMode="Single" MaxHeight="300"/>
+            </StackPanel>
+        </Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button HorizontalAlignment="Right" Click="Present_Click">Mark Present</Button>
+            <Button Click="Absent_Click">Mark Absent</Button>
         </StackPanel>
-    </StackPanel>
+        <Button Click="RollCallFinished_Click">Done</Button>
+        </StackPanel>
 </UserControl>

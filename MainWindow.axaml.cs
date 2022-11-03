@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Avalonia.Controls;
 using Config.Net;
 using MUNManager.Configuration;
@@ -22,11 +23,18 @@ namespace MUNManager
 
             // Quickly show a debug view if the debug flag is set. A UserControl is used instead of a method since it has more options to play around with.
             if(IfUtils.Contains(args, "-dv", "--debugView")) Instance.Content = new DebugView();
-                Instance.Content = IfUtils.Contains(args, "-s", "--skipSetup") switch
+            switch (IfUtils.Contains(args, "-s", "--skipSetup"))
             {
-                true  => new HomeView(),
-                false => new WelcomeView()
-            };
+                case true:
+                    EventConfiguration.EventName = "MUNManager (Debug)";
+                    EventConfiguration.Debug = true;
+                    EventConfiguration.Participants = "Participant1-Participant2-Participant3-Participant4-Participant5-Participant6-Participant7-Participant8";
+                    Content = new HomeView();
+                    break;
+                case false:
+                    Content = new WelcomeView();
+                    break;
+            }
         }
 
         private void InitializeConfiguration()
