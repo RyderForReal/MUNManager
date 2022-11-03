@@ -6,5 +6,9 @@
              x:Class="MUNManager.Views.RollCallView">
     <StackPanel>
         <TextBlock Classes="SetupTitle" Name="ViewTitleElement">Roll Call</TextBlock>
+        <TextBlock Classes="SubTitle" Name="ViewSubtitleElement">Please select the countries that are present in the committee.</TextBlock>
+        
+        <StackPanel>
+        </StackPanel>
     </StackPanel>
 </UserControl>
