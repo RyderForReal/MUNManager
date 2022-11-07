@@ -18,7 +18,7 @@ The application requires the latest version of .NET Core.
 - [x] Ask whether to yield to the chair or the next speaker
 - [x] (High Priority) Branding
 - [x] Allow importing/exporting event configurations to configuration files
-- [ ] Roll calls
+- [x] Roll calls
 - [ ] (Medium Priority) Group observer states during event creation
 - [ ] (Low Priority) Flags for delegations
 - [ ] (Low Priority) Allow for customizing the timer colors, improve UI
