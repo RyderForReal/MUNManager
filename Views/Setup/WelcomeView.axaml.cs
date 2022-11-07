@@ -38,6 +38,7 @@ namespace MUNManager.Views.Setup {
 				.UseIniFile(result[0])
 				.Build();
 			MainWindow.Instance.EventConfiguration = fsConfig;
+			// Check whether it needs to be split and re-joined - seems odd.
 			MainWindow.Instance.EventConfiguration.Participants = string.Join('-', fsConfig.Participants.Split('-'));
 			MainWindow.Instance.EventConfiguration.Debug = IfUtils.Contains(Environment.GetCommandLineArgs(), "-d", "--debug");
 			MainWindow.Instance.Content = new HomeView();

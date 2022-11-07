@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
@@ -12,7 +13,7 @@ namespace MUNManager.Views {
 		private readonly NumericUpDown _moderatedTimeEach;
 		private readonly NumericUpDown _moderatedTime;
 		private readonly NumericUpDown _unmoderatedTime;
-
+		
 		internal static uint ModeratedDuration;
 		internal static uint ModeratedTimeEach;
 		internal static uint UnmoderatedDuration;
@@ -25,7 +26,7 @@ namespace MUNManager.Views {
 			var dynamicEventName = this.FindControl<TextBlock>("DynEventName");
 			dynamicEventName.Text = MainWindow.Instance.EventConfiguration.EventName;
 			
-			this.FindControl<Button>("RollCall").IsVisible = MainWindow.Instance.EventConfiguration.Debug;
+			//this.FindControl<Button>("RollCall").IsVisible = MainWindow.Instance.EventConfiguration.Debug;
 
 			_moderatedTimeEach = this.FindControl<NumericUpDown>("ModeratedTimePerSpeakerInput");
 			_moderatedTime = this.FindControl<NumericUpDown>("ModeratedDurationInput");

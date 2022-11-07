@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
 using Config.Net;
@@ -12,6 +13,7 @@ namespace MUNManager
     public partial class MainWindow : Window
     {
         public IEventConfiguration EventConfiguration { get; internal set; } = null!;
+        public List<string> PresentParticipants = new();
         internal static MainWindow Instance;
         public MainWindow()
         {

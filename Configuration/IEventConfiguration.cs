@@ -31,6 +31,6 @@ namespace MUNManager.Configuration {
 		[Option(Alias = "DataStorage.Participants")]
 		
 		// TODO: Currently, making a helper method to parse the IEnumerable to a string exhibits weird behavior. However, setting this value directly is not viable, so a workaround is needed.
-		string Participants { get; set; }
+		string Participants { get; set; } 
 	}
 }

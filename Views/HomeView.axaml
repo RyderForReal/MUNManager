@@ -26,7 +26,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Click="Moderated_Click">Start Moderated</Button>
             <Button Click="Unmoderated_Click">Start Unmoderated</Button>
-            <Button IsVisible="False" Click="RollCall_Click" Name="RollCall">Roll Call</Button>
+            <Button Click="RollCall_Click" Name="RollCall">Roll Call</Button>
         </StackPanel>
     </StackPanel>
 </UserControl>

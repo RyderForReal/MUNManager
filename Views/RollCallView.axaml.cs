@@ -1,7 +1,5 @@
 // (c) 2022, RyderForNow. This project is licensed under AGPL v.3.0.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -45,11 +43,17 @@ namespace MUNManager.Views {
 		{
 			foreach (var country in _presentCountries)
 			{
-				var c = country.Insert(0, "@");
-				MainWindow.Instance.EventConfiguration.Participants.Replace(country, c);
+				MainWindow.Instance.PresentParticipants.Add(country);
 			}
-			Console.WriteLine(MainWindow.Instance.EventConfiguration.Participants);
-			MainWindow.Instance.Content = new HomeView();
+
+			if (MainWindow.Instance.EventConfiguration.DoOpeningSpeeches)
+			{
+				MainWindow.Instance.Content = new OpeningSpeechView();
+			}
+			else
+			{
+				MainWindow.Instance.Content = new HomeView();
+			}
 		}
 	}
 }

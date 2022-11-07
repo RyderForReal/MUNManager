@@ -21,6 +21,6 @@
             <Button HorizontalAlignment="Right" Click="Present_Click">Mark Present</Button>
             <Button Click="Absent_Click">Mark Absent</Button>
         </StackPanel>
-        <Button Click="RollCallFinished_Click">Done</Button>
+        <Button HorizontalAlignment="Center" Click="RollCallFinished_Click">Done</Button>
         </StackPanel>
 </UserControl>

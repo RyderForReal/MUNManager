@@ -26,14 +26,7 @@ namespace MUNManager.Views.Setup {
 
 		private void ContinueVolatile(object? sender, RoutedEventArgs e)
 		{
-			if (MainWindow.Instance.EventConfiguration.DoOpeningSpeeches)
-			{
-				MainWindow.Instance.Content = new OpeningSpeechView();
-			}
-			else
-			{
-				MainWindow.Instance.Content = new HomeView();
-			}
+			MainWindow.Instance.Content = new RollCallView();
 			Close();
 		}
 

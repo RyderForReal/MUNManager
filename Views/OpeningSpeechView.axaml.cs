@@ -17,7 +17,7 @@ namespace MUNManager.Views {
 		private static readonly uint TimeDefault = MainWindow.Instance.EventConfiguration.OpeningSpeechDuration;
 
 		private static string _currentCountry = string.Empty;
-		private static readonly List<string> NextUp = new(MainWindow.Instance.EventConfiguration.Participants.Split('-'));
+		private static List<string> NextUp;
 		
 		private static Button _startStop = null!;
 		private static TextBlock _currentCountryText = null!;
@@ -26,6 +26,15 @@ namespace MUNManager.Views {
 		{
 			InitializeComponent();
 			MainWindow.Instance.Title = $"{MainWindow.Instance.EventConfiguration.EventName} | Opening Speeches";
+
+			if (MainWindow.Instance.EventConfiguration.HideIfAbsent)
+			{
+				NextUp = new(MainWindow.Instance.PresentParticipants);
+			}
+			else
+			{
+				NextUp = new(MainWindow.Instance.EventConfiguration.Participants.Split('-'));
+			}
 			
 			_currentCountry = NextUp[0];
 			_currentCountryText = this.FindControl<TextBlock>("CurrentlySpeakingName");

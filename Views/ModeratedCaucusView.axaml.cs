@@ -18,7 +18,7 @@ namespace MUNManager.Views {
 
 		internal static ModeratedCaucusView Instance = null!;
 		private readonly ObservableCollection<string> _speakers = new();
-		private static readonly ObservableCollection<string> AvailableSpeakers = new(MainWindow.Instance.EventConfiguration.Participants.Split('-'));
+		private static ObservableCollection<string> AvailableSpeakers;
 
 		public Timer Timer { get; } = new(1000);
 		public uint GlobalTimeLeft { get; set; }
@@ -50,6 +50,15 @@ namespace MUNManager.Views {
 			Instance = this;
 			MainWindow.Instance.Title = $"{MainWindow.Instance.EventConfiguration.EventName} | Moderated Caucus";
 
+			if (MainWindow.Instance.EventConfiguration.HideIfAbsent)
+			{
+				AvailableSpeakers = new(MainWindow.Instance.PresentParticipants);
+			}
+			else
+			{
+				AvailableSpeakers = new(MainWindow.Instance.EventConfiguration.Participants.Split('-'));
+			}
+			
 			CurrentTimeLeft = _defaultCurrentTime;
 			GlobalTimeLeft = _defaultGlobalTime;
 
