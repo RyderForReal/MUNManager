@@ -5,6 +5,15 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MUNManager.Views.Setup.WelcomeView">
     <Grid>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.55" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
         <StackPanel VerticalAlignment="Center">
             <TextBlock Classes="MainTitle AnimateIn1">Welcome to MUNManager</TextBlock>
             <TextBlock Classes="SubTitle AnimateIn1">Create a new event or load an existing configuration.</TextBlock>

@@ -3,6 +3,7 @@ using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Config.Net;
 using MUNManager.Configuration;
 using MUNManager.Utils;
@@ -12,6 +13,8 @@ namespace MUNManager.Views.Setup {
 		public WelcomeView()
 		{
 			InitializeComponent();
+			MainWindow.Instance.Background = Brushes.Transparent;
+			MainWindow.Instance.TransparencyLevelHint = WindowTransparencyLevel.AcrylicBlur;
 		}
 
 		private void InitializeComponent()

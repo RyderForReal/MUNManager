@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using MUNManager.Configuration;
 
 namespace MUNManager.Views.Setup {
@@ -9,6 +10,8 @@ namespace MUNManager.Views.Setup {
 		public EventSetup1()
 		{
 			InitializeComponent();
+			MainWindow.Instance.Background = new SolidColorBrush(Color.Parse("#121212"));
+			MainWindow.Instance.TransparencyLevelHint = WindowTransparencyLevel.None;
 			_doOpeningSpeeches = this.Find<ToggleSwitch>("OpeningSpeeches");
 			MainWindow.Instance.Title = "Set up an Event | MUNManager";
 		}
