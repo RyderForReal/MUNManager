@@ -6,29 +6,30 @@
              x:Class="MUNManager.Views.Setup.CountrySelection">
     <Grid>
         <StackPanel>
-        <TextBlock Classes="SetupTitle AnimateIn1f">Which countries will participate in your event?</TextBlock>
+            <TextBlock Classes="SetupTitle AnimateIn1f">Which countries will participate in your event?</TextBlock>
 
-        <Grid ColumnDefinitions="* *">
-            <StackPanel Grid.Column="0" HorizontalAlignment="Right" Margin="0 0 2 0">
-                <Label>Available</Label>
-                <!-- TODO: Make a documentation page with the list of countries -->
-                <AutoCompleteBox Name="Countries" MinWidth="350"/>
-                <!--<ListBox Name="Available" MinWidth="350" Height="200" MaxHeight="200" SelectionMode="Single"/>-->
-                <Button Click="AddToSelected" Margin="0 2 0 0">Add Selected</Button>
+            <Grid ColumnDefinitions="* *">
+                <StackPanel Grid.Column="0" HorizontalAlignment="Right" Margin="0 0 2 0">
+                    <Label>Available</Label>
+                    <!-- TODO: Make a documentation page with the list of countries -->
+                    <AutoCompleteBox Name="Countries" MinWidth="350" />
+                    <!--<ListBox Name="Available" MinWidth="350" Height="200" MaxHeight="200" SelectionMode="Single"/>-->
+                    <Button Click="AddToSelected" Margin="0 2 0 0">Add Selected</Button>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="0 0 2 0">
+                    <Label>Selected</Label>
+                    <ListBox Name="Selected" SelectionMode="Single" Height="200" MinWidth="350" MaxHeight="200" />
+                    <Button Click="RemoveFromSelected" Margin="0 2 0 0">Remove Selected</Button>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                        Margin="0 0 5 5">
+                <Button Click="EventSetup1" Margin="0 0 5 0">Back</Button>
+                <Button Click="Finalize">Finish</Button>
+                <!-- TODO: Open window when pressed, ask whether to save. If yes, open save dialog. If no, save to a temporary directory which gets cleaned on restarts. -->
             </StackPanel>
-            
-            <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="0 0 2 0">
-                <Label>Selected</Label>
-                <ListBox Name="Selected" SelectionMode="Single" Height="200" MinWidth="350" MaxHeight="200"/>
-                <Button Click="RemoveFromSelected" Margin="0 2 0 0">Remove Selected</Button>
-            </StackPanel>
-        </Grid>
-        
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 5 5">
-        <Button Click="EventSetup1" Margin="0 0 5 0">Back</Button>
-        <Button Click="Finalize">Finish</Button>
-            <!-- TODO: Open window when pressed, ask whether to save. If yes, open save dialog. If no, save to a temporary directory which gets cleaned on restarts. -->
-        </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

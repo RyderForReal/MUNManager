@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Timers;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -11,37 +7,22 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using MUNManager.Configuration;
 using MUNManager.Utils;
-using Timer = System.Timers.Timer;
 
 namespace MUNManager.Views {
 	public partial class ModeratedCaucusView : UserControl, IDualCountdownView {
-
 		internal static ModeratedCaucusView Instance = null!;
-		private readonly ObservableCollection<string> _speakers = new();
 		private static ObservableCollection<string> AvailableSpeakers;
-
-		public Timer Timer { get; } = new(1000);
-		public uint GlobalTimeLeft { get; set; }
-		public bool GlobalTimerRunning { get; set; }
-		public ProgressBar GlobalProgressBar { get; }
-		public Label GlobalTimeLeft_Label { get; }
-		public uint CurrentTimeLeft { get; set; }
-		public bool CurrentTimerRunning { get; set; }
-		public ProgressBar CurrentProgressBar { get; }
-		public Label CurrentTimeLeft_Label { get; }
-		public bool ActiveSpeaker { get; set; }
-
-		private readonly uint _defaultGlobalTime = HomeView.ModeratedDuration;
-		private readonly uint _defaultCurrentTime = HomeView.ModeratedTimeEach;
+		private readonly AutoCompleteBox _availableList;
 
 		private readonly TextBlock _currentSpeaker;
-		public TextBlock ViewTitle { get; }
-		private readonly ListBox _nextList;
-		private readonly AutoCompleteBox _availableList;
+		private readonly uint _defaultCurrentTime = HomeView.ModeratedTimeEach;
+
+		private readonly uint _defaultGlobalTime = HomeView.ModeratedDuration;
 		private readonly Button _globalButton;
-		public Button SpeakerStartStopButton { get; }
-		private readonly Button _skipButton;
+		private readonly ListBox _nextList;
 		private readonly Button _removeButton;
+		private readonly Button _skipButton;
+		private readonly ObservableCollection<string> _speakers = new();
 		private readonly Button _yieldButton;
 
 		public ModeratedCaucusView()
@@ -50,15 +31,9 @@ namespace MUNManager.Views {
 			Instance = this;
 			MainWindow.Instance.Title = $"{MainWindow.Instance.EventConfiguration.EventName} | Moderated Caucus";
 
-			if (MainWindow.Instance.EventConfiguration.HideIfAbsent)
-			{
-				AvailableSpeakers = new(MainWindow.Instance.PresentParticipants);
-			}
-			else
-			{
-				AvailableSpeakers = new(MainWindow.Instance.EventConfiguration.Participants.Split('-'));
-			}
-			
+			if (MainWindow.Instance.EventConfiguration.HideIfAbsent) { AvailableSpeakers = new ObservableCollection<string>(MainWindow.Instance.PresentParticipants); }
+			else { AvailableSpeakers = new ObservableCollection<string>(MainWindow.Instance.EventConfiguration.Participants.Split('-')); }
+
 			CurrentTimeLeft = _defaultCurrentTime;
 			GlobalTimeLeft = _defaultGlobalTime;
 
@@ -77,7 +52,7 @@ namespace MUNManager.Views {
 
 			_currentSpeaker.Text = _speakers.Count.Equals(0) ? "No speakers" : _speakers[0];
 
-			
+
 			GlobalProgressBar = this.FindControl<ProgressBar>("GlobalCountdownBar");
 			CurrentProgressBar = this.FindControl<ProgressBar>("CurrentCountdownBar");
 			GlobalProgressBar.Maximum = _defaultGlobalTime;
@@ -87,7 +62,7 @@ namespace MUNManager.Views {
 			GlobalTimeLeft_Label = this.FindControl<Label>("GlobalCountdownText");
 			CurrentTimeLeft_Label = this.FindControl<Label>("CurrentCountdownText");
 			GlobalTimeLeft_Label.Content = $"{GlobalTimeLeft}s left";
-			
+
 			_availableList.Items = AvailableSpeakers;
 			_nextList.Items = _speakers;
 
@@ -96,19 +71,33 @@ namespace MUNManager.Views {
 			CountdownUtils.SetCountdownUIColor(this, Brushes.White, 100);
 		}
 
+		public Timer Timer { get; } = new(1000);
+		public uint GlobalTimeLeft { get; set; }
+		public bool GlobalTimerRunning { get; set; }
+		public ProgressBar GlobalProgressBar { get; }
+		public Label GlobalTimeLeft_Label { get; }
+		public uint CurrentTimeLeft { get; set; }
+		public bool CurrentTimerRunning { get; set; }
+		public ProgressBar CurrentProgressBar { get; }
+		public Label CurrentTimeLeft_Label { get; }
+		public bool ActiveSpeaker { get; set; }
+		public TextBlock ViewTitle { get; }
+		public Button SpeakerStartStopButton { get; }
+
 		private void UpdateSpeaker()
 		{
 			if (ActiveSpeaker)
 				return;
 			_currentSpeaker.Text = _speakers[0];
 			_speakers.RemoveAt(0);
-			
+
 			// TODO: Disable "remove from list" button if no entries
 			_skipButton.IsEnabled = _speakers.Count != 0;
 			_yieldButton.IsEnabled = _speakers.Count != 0;
 
 			ActiveSpeaker = true;
 		}
+
 		private void TimerOnElapsed(object? sender, ElapsedEventArgs e)
 		{
 			if (GlobalTimerRunning)
@@ -155,7 +144,7 @@ namespace MUNManager.Views {
 				// TODO: Implement buttons in the Interface and use parameter to determine the text (start/stop).
 				SpeakerStartStopButton.Content = "Pause Current";
 				_globalButton.Content = "Pause Global";
-				CountdownUtils.UpdateCountdownUI(this, 100, false, false);
+				CountdownUtils.UpdateCountdownUI(this, 100);
 			}
 		}
 
@@ -179,10 +168,7 @@ namespace MUNManager.Views {
 					Instance._yieldButton.IsEnabled = false;
 				});
 			}
-			else
-			{
-				Instance.UpdateSpeaker();
-			}
+			else { Instance.UpdateSpeaker(); }
 		}
 
 		private void SkipCurrentSpeaker_Click(object? sender, RoutedEventArgs e)
@@ -209,6 +195,7 @@ namespace MUNManager.Views {
 					CurrentTimerRunning = true;
 					SpeakerStartStopButton.Content = "Pause Current";
 				}
+
 				GlobalTimerRunning = true;
 				CountdownUtils.UpdateCountdownUI(this, 100);
 			}
@@ -222,10 +209,7 @@ namespace MUNManager.Views {
 			switch (_speakers.Count)
 			{
 				case 0:
-					Dispatcher.UIThread.Post(() =>
-					{
-						SpeakerStartStopButton.IsEnabled = true;
-					});
+					Dispatcher.UIThread.Post(() => { SpeakerStartStopButton.IsEnabled = true; });
 					break;
 				case >= 1:
 					Dispatcher.UIThread.Post(() =>
@@ -236,6 +220,7 @@ namespace MUNManager.Views {
 					break;
 			}
 		}
+
 		private void Remove_Click(object? sender, RoutedEventArgs e)
 		{
 			if (_nextList.SelectedItems.Count == 0) return;

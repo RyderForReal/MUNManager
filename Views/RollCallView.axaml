@@ -10,11 +10,11 @@
         <Grid ColumnDefinitions="* *">
             <StackPanel Grid.Column="0" HorizontalAlignment="Right" MinHeight="150">
                 <Label HorizontalAlignment="Right">Absent</Label>
-                <ListBox Name="AbsentCountries" HorizontalAlignment="Right" SelectionMode="Single" MaxHeight="300"/>
+                <ListBox Name="AbsentCountries" HorizontalAlignment="Right" SelectionMode="Single" MaxHeight="300" />
             </StackPanel>
             <StackPanel Grid.Column="1" MinHeight="150">
                 <Label>Present</Label>
-                <ListBox Name="PresentCountries" SelectionMode="Single" MaxHeight="300"/>
+                <ListBox Name="PresentCountries" SelectionMode="Single" MaxHeight="300" />
             </StackPanel>
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -22,5 +22,5 @@
             <Button Click="Absent_Click">Mark Absent</Button>
         </StackPanel>
         <Button HorizontalAlignment="Center" Click="RollCallFinished_Click">Done</Button>
-        </StackPanel>
+    </StackPanel>
 </UserControl>

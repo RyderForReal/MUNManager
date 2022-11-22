@@ -2,11 +2,11 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using MUNManager.Configuration;
 
 namespace MUNManager.Views.Setup {
 	public partial class EventSetup1 : UserControl {
 		private static ToggleSwitch _doOpeningSpeeches = null!;
+
 		public EventSetup1()
 		{
 			InitializeComponent();
@@ -25,15 +25,11 @@ namespace MUNManager.Views.Setup {
 		{
 			var eventName = this.FindControl<TextBox>("EventName");
 
-			if (string.IsNullOrEmpty(eventName.Text))
-			{
-				eventName.Text = "MUNManager";
-			}
+			if (string.IsNullOrEmpty(eventName.Text)) { eventName.Text = "MUNManager"; }
+
 			MainWindow.Instance.EventConfiguration.EventName = eventName.Text;
-			if (MainWindow.Instance.EventConfiguration.EventName != "MUNManager")
-			{
-				MainWindow.Instance.Title = $"{MainWindow.Instance.EventConfiguration.EventName} | MUNManager";
-			}
+			if (MainWindow.Instance.EventConfiguration.EventName != "MUNManager") { MainWindow.Instance.Title = $"{MainWindow.Instance.EventConfiguration.EventName} | MUNManager"; }
+
 			MainWindow.Instance.EventConfiguration.DoOpeningSpeeches = _doOpeningSpeeches.IsChecked!.Value;
 			MainWindow.Instance.EventConfiguration.OpeningSpeechDuration = (uint)this.FindControl<NumericUpDown>("OpeningSpeechDuration").Value;
 

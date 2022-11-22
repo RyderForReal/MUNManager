@@ -5,36 +5,44 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MUNManager.Views.ModeratedCaucusView">
     <Grid Margin="2">
-    <StackPanel>
-        <TextBlock Classes="SetupTitle" Name="ViewTitleElement">Moderated Caucus</TextBlock>
         <StackPanel>
-            <Label Name="GlobalCountdownText" HorizontalAlignment="Center"/>
-            <ProgressBar Name="GlobalCountdownBar" Width="600" HorizontalAlignment="Center"/>
-        </StackPanel>
-        
-        <Grid ColumnDefinitions="* *" Margin="0 25 0 0">
-            <StackPanel Grid.Column="0" HorizontalAlignment="Right" Margin="0 0 2 0">
-            <Label HorizontalAlignment="Right">Current Speaker</Label>
-            <TextBlock Name="CurrentSpeaker" HorizontalAlignment="Right" FontSize="20"/>
-            <Label Name="CurrentCountdownText" HorizontalAlignment="Right" Content="Please add a speaker and start the timer."/>
-            <ProgressBar Name="CurrentCountdownBar" Width="300" HorizontalAlignment="Right"/>
+            <TextBlock Classes="SetupTitle" Name="ViewTitleElement">Moderated Caucus</TextBlock>
+            <StackPanel>
+                <Label Name="GlobalCountdownText" HorizontalAlignment="Center" />
+                <ProgressBar Name="GlobalCountdownBar" Width="600" HorizontalAlignment="Center" />
             </StackPanel>
-        <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="2 0 0 0">
-            <Label>Speaker List</Label>
-            <ListBox Name="NextCountries"/>
+
+            <Grid ColumnDefinitions="* *" Margin="0 25 0 0">
+                <StackPanel Grid.Column="0" HorizontalAlignment="Right" Margin="0 0 2 0">
+                    <Label HorizontalAlignment="Right">Current Speaker</Label>
+                    <TextBlock Name="CurrentSpeaker" HorizontalAlignment="Right" FontSize="20" />
+                    <Label Name="CurrentCountdownText" HorizontalAlignment="Right"
+                           Content="Please add a speaker and start the timer." />
+                    <ProgressBar Name="CurrentCountdownBar" Width="300" HorizontalAlignment="Right" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="2 0 0 0">
+                    <Label>Speaker List</Label>
+                    <ListBox Name="NextCountries" />
+                </StackPanel>
+            </Grid>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                        Margin="0 5 3 0">
+                <Button Click="CurrentStartStop_onClick" Name="CurrentStartStop" IsEnabled="False"
+                        HorizontalAlignment="Right">
+                    Start Current
+                </Button>
+                <Button Click="Yield_Click" Name="YieldToNext" IsEnabled="False">Yield</Button>
+                <Button Click="SkipCurrentSpeaker_Click" IsEnabled="False" HorizontalAlignment="Right"
+                        Name="SkipCurrentSpeaker">
+                    Skip Current
+                </Button>
+                <Button Click="Remove_Click" Name="RemoveFromNext">Remove from List</Button>
+            </StackPanel>
         </StackPanel>
-        </Grid>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 5 3 0">
-            <Button Click="CurrentStartStop_onClick" Name="CurrentStartStop" IsEnabled="False" HorizontalAlignment="Right">Start Current</Button>
-            <Button Click="Yield_Click" Name="YieldToNext" IsEnabled="False">Yield</Button>
-            <Button Click="SkipCurrentSpeaker_Click" IsEnabled="False" HorizontalAlignment="Right" Name="SkipCurrentSpeaker">Skip Current</Button>
-            <Button Click="Remove_Click" Name="RemoveFromNext">Remove from List</Button>
-        </StackPanel>
-    </StackPanel>
         <StackPanel VerticalAlignment="Bottom">
             <Label Name="AddSpeakerLabel">Add a Speaker</Label>
-            <TextBlock Name="AllAvailableSpeakersInfo" FontSize="10"/>
-            <AutoCompleteBox Name="AllCountries"/>
+            <TextBlock Name="AllAvailableSpeakersInfo" FontSize="10" />
+            <AutoCompleteBox Name="AllCountries" />
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
                 <Button Click="AddToNextUp">Add Speaker</Button>
                 <Button Click="AllStartStop_Click" Name="GlobalStartStop">Start Global</Button>

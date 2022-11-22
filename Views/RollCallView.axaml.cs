@@ -8,10 +8,11 @@ using Avalonia.Markup.Xaml;
 namespace MUNManager.Views {
 	public partial class RollCallView : UserControl {
 		private readonly ObservableCollection<string> _absentCountries = new(MainWindow.Instance.EventConfiguration.Participants.Split('-'));
-		private readonly ObservableCollection<string> _presentCountries = new();
-		
+
 		private readonly ListBox _absentListBox;
+		private readonly ObservableCollection<string> _presentCountries = new();
 		private readonly ListBox _presentListBox;
+
 		public RollCallView()
 		{
 			InitializeComponent();
@@ -32,6 +33,7 @@ namespace MUNManager.Views {
 			_presentCountries.Add(_absentListBox.SelectedItems[0].ToString());
 			_absentCountries.Remove(_absentListBox.SelectedItems[0].ToString());
 		}
+
 		private void Absent_Click(object? sender, RoutedEventArgs e)
 		{
 			if (_presentListBox.SelectedItems.Count == 0) return;
@@ -41,19 +43,10 @@ namespace MUNManager.Views {
 
 		private void RollCallFinished_Click(object? sender, RoutedEventArgs e)
 		{
-			foreach (var country in _presentCountries)
-			{
-				MainWindow.Instance.PresentParticipants.Add(country);
-			}
+			foreach (var country in _presentCountries) { MainWindow.Instance.PresentParticipants.Add(country); }
 
-			if (MainWindow.Instance.EventConfiguration.DoOpeningSpeeches)
-			{
-				MainWindow.Instance.Content = new OpeningSpeechView();
-			}
-			else
-			{
-				MainWindow.Instance.Content = new HomeView();
-			}
+			if (MainWindow.Instance.EventConfiguration.DoOpeningSpeeches) { MainWindow.Instance.Content = new OpeningSpeechView(); }
+			else { MainWindow.Instance.Content = new HomeView(); }
 		}
 	}
 }

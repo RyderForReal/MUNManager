@@ -18,9 +18,11 @@
             <TextBlock Classes="MainTitle AnimateIn1">Welcome to MUNManager</TextBlock>
             <TextBlock Classes="SubTitle AnimateIn1">Create a new event or load an existing configuration.</TextBlock>
         </StackPanel>
-        <StackPanel Classes="AnimateIn1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 5 5">
+        <StackPanel Classes="AnimateIn1" Orientation="Horizontal" HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom" Margin="0 0 5 5">
             <Button Margin="0 0 5 0" Click="LoadConfig_Click" Name="LoadConfigButton">Load Configuration</Button>
             <Button Click="EventSetup1">New</Button>
+            <Button IsVisible="False" Click="Preferences_Click" Name="PreferencesButton">Preferences</Button>
         </StackPanel>
     </Grid>
 </UserControl>

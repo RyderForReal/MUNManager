@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using MUNManager.Configuration;
 using MUNManager.Utils;
 
 
@@ -19,6 +15,7 @@ namespace MUNManager.Views.Setup {
 		private static readonly ObservableCollection<string> SelectedCountries = new();
 		private static ListBox _selectedCountriesListBox = null!;
 		private static AutoCompleteBox _searchBox = null!;
+
 		public CountrySelection()
 		{
 			InitializeComponent();
@@ -46,21 +43,16 @@ namespace MUNManager.Views.Setup {
 
 			AvailableCountries.Add(_selectedCountriesListBox.SelectedItems[0]?.ToString()!);
 			SelectedCountries.Remove(_selectedCountriesListBox.SelectedItems[0]?.ToString()!);
-			
+
 			var tempSorted1 = new List<string>(AvailableCountries);
 			tempSorted1.Sort();
 
-			for (var i = 0; i < tempSorted1.Count; i++)
-			{
-				AvailableCountries.Move(AvailableCountries.IndexOf(tempSorted1[i]), i);
-			}
+			for (var i = 0; i < tempSorted1.Count; i++) { AvailableCountries.Move(AvailableCountries.IndexOf(tempSorted1[i]), i); }
+
 			var tempSorted2 = new List<string>(SelectedCountries);
 			tempSorted2.Sort();
 
-			for (var i = 0; i < tempSorted2.Count; i++)
-			{
-				SelectedCountries.Move(SelectedCountries.IndexOf(tempSorted2[i]), i);
-			}
+			for (var i = 0; i < tempSorted2.Count; i++) { SelectedCountries.Move(SelectedCountries.IndexOf(tempSorted2[i]), i); }
 		}
 
 		private void AddToSelected(object? sender, RoutedEventArgs e)
@@ -70,28 +62,23 @@ namespace MUNManager.Views.Setup {
 
 			SelectedCountries.Add(_searchBox.SelectedItem.ToString()!);
 			AvailableCountries.Remove(_searchBox.SelectedItem.ToString()!);
-			
+
 			var tempSorted1 = new List<string>(AvailableCountries);
 			tempSorted1.Sort();
 
-			for (var i = 0; i < tempSorted1.Count; i++)
-			{
-				AvailableCountries.Move(AvailableCountries.IndexOf(tempSorted1[i]), i);
-			}
+			for (var i = 0; i < tempSorted1.Count; i++) { AvailableCountries.Move(AvailableCountries.IndexOf(tempSorted1[i]), i); }
+
 			var tempSorted2 = new List<string>(SelectedCountries);
 			tempSorted2.Sort();
 
-			for (var i = 0; i < tempSorted2.Count; i++)
-			{
-				SelectedCountries.Move(SelectedCountries.IndexOf(tempSorted2[i]), i);
-			}
+			for (var i = 0; i < tempSorted2.Count; i++) { SelectedCountries.Move(SelectedCountries.IndexOf(tempSorted2[i]), i); }
 		}
 
 		private void Finalize(object? sender, RoutedEventArgs e)
 		{
 			// TODO: Add error message later
 			if (SelectedCountries.Count == 0) return;
-			
+
 			MainWindow.Instance.EventConfiguration.Participants = string.Join('-', SelectedCountries);
 			new SaveDialog().Show();
 		}

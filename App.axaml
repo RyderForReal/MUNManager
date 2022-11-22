@@ -3,9 +3,9 @@
              xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
              x:Class="MUNManager.App">
     <Application.Styles>
-        <StyleInclude Source="/Views/Styling/MainStyle.axaml"/>
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
-        <styling:FluentAvaloniaTheme/>
-        <FluentTheme Mode="Dark"/>
+        <StyleInclude Source="/Views/Styling/MainStyle.axaml" />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+        <styling:FluentAvaloniaTheme />
+        <FluentTheme Mode="Dark" />
     </Application.Styles>
 </Application>

@@ -12,50 +12,50 @@
         <Style.Animations>
             <Animation Duration="0:0:1.5" Delay="0:0:0.1" Easing="CubicEaseIn">
                 <KeyFrame Cue="0%">
-                    <Setter Property="Opacity" Value="0.0"/>
+                    <Setter Property="Opacity" Value="0.0" />
                 </KeyFrame>
                 <KeyFrame Cue="100%">
-                    <Setter Property="Opacity" Value="1.0"/>
-                    <Setter Property="Height" Value="0"/>
+                    <Setter Property="Opacity" Value="1.0" />
+                    <Setter Property="Height" Value="0" />
                 </KeyFrame>
             </Animation>
-        </Style.Animations>    
+        </Style.Animations>
     </Style>
     <Style Selector="StackPanel.AnimateIn1,TextBlock.AnimateIn1f">
         <Style.Animations>
             <Animation Duration="0:0:0.75" Delay="0:0:0.01" Easing="CubicEaseIn">
                 <KeyFrame Cue="0%">
-                    <Setter Property="Opacity" Value="0.0"/>
+                    <Setter Property="Opacity" Value="0.0" />
                 </KeyFrame>
                 <KeyFrame Cue="100%">
-                    <Setter Property="Opacity" Value="1.0"/>
-                    <Setter Property="Height" Value="0"/>
+                    <Setter Property="Opacity" Value="1.0" />
+                    <Setter Property="Height" Value="0" />
                 </KeyFrame>
             </Animation>
-        </Style.Animations>    
+        </Style.Animations>
     </Style>
     <Style Selector="Window">
-    <Setter Property="FontFamily" Value="Open Sans"/>
+        <Setter Property="FontFamily" Value="Open Sans" />
     </Style>
     <Style Selector="TextBlock.MainTitle">
-        
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="50"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
+
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="50" />
+        <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
     <Style Selector="TextBlock.SubTitle">
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="18"/>
-        <Setter Property="FontWeight" Value="SemiLight"/>
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontWeight" Value="SemiLight" />
     </Style>
-    
+
     <Style Selector="TextBlock.SetupTitle">
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="30"/>
-        <Setter Property="Margin" Value="0 10 0 0"/>
-        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Margin" Value="0 10 0 0" />
+        <Setter Property="FontWeight" Value="Medium" />
     </Style>
     <Style Selector="Button">
-        <Setter Property="Margin" Value="0 0 2 0"/>
+        <Setter Property="Margin" Value="0 0 2 0" />
     </Style>
 </Styles>
