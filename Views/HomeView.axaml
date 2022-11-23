@@ -8,19 +8,19 @@
         <TextBlock Name="DynEventName" Classes="SetupTitle" HorizontalAlignment="Center">MUNManager</TextBlock>
         <Grid ColumnDefinitions="250 250" Margin="5" HorizontalAlignment="Center">
             <StackPanel Grid.Column="0" HorizontalAlignment="Right" Margin="0 0 5 0">
-            <TextBlock HorizontalAlignment="Right" Classes="SubTitle">Moderated Caucus</TextBlock>
-            <Label Name="ModeratedDurationLabel">Total Duration</Label>
-            <NumericUpDown Name="ModeratedDurationInput" Value="120"/>
-            <Label Name="ModeratedTimePerEachLabel">Time per Speaker</Label>
-            <NumericUpDown Name="ModeratedTimePerSpeakerInput" Value="20"/>
-            <Label>Default Yield Behavior Override</Label>
-            <RadioButton IsEnabled="False" GroupName="YieldOverride">Chair</RadioButton>
-            <RadioButton IsEnabled="False" GroupName="YieldOverride">Next Speaker</RadioButton>
+                <TextBlock HorizontalAlignment="Right" Classes="SubTitle">Moderated Caucus</TextBlock>
+                <Label Name="ModeratedDurationLabel">Total Duration</Label>
+                <NumericUpDown Name="ModeratedDurationInput" Value="120" />
+                <Label Name="ModeratedTimePerEachLabel">Time per Speaker</Label>
+                <NumericUpDown Name="ModeratedTimePerSpeakerInput" Value="20" />
+                <Label>Default Yield Behavior Override</Label>
+                <RadioButton IsEnabled="False" GroupName="YieldOverride">Chair</RadioButton>
+                <RadioButton IsEnabled="False" GroupName="YieldOverride">Next Speaker</RadioButton>
             </StackPanel>
             <StackPanel Grid.Column="1" HorizontalAlignment="Left">
-            <TextBlock HorizontalAlignment="Left" Classes="SubTitle">Unmoderated Caucus</TextBlock>
-            <Label Name="UnmoderatedDurationLabel">Total Duration</Label>
-            <NumericUpDown Name="UnmoderatedDurationInput" Value="60"/>
+                <TextBlock HorizontalAlignment="Left" Classes="SubTitle">Unmoderated Caucus</TextBlock>
+                <Label Name="UnmoderatedDurationLabel">Total Duration</Label>
+                <NumericUpDown Name="UnmoderatedDurationInput" Value="60" />
             </StackPanel>
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

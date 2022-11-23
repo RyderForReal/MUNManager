@@ -3,25 +3,17 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using Avalonia.Threading;
 using MUNManager.Configuration;
 using MUNManager.Utils;
 
 namespace MUNManager.Views {
 	public partial class UnmoderatedCaucusView : UserControl, ICountdownView {
 		internal static UnmoderatedCaucusView Instance = null!;
-		public Timer Timer { get; } = new(1000);
 
 		private readonly uint _defaultGlobalTime = HomeView.UnmoderatedDuration;
 
-		public bool GlobalTimerRunning { get; set; }
-		public uint GlobalTimeLeft { get; set; }
-		public ProgressBar GlobalProgressBar { get; }
-		// ReSharper disable once InconsistentNaming
-		public Label GlobalTimeLeft_Label { get; }
-		public TextBlock ViewTitle { get; }
-		
 		private readonly Button _globalButton;
+
 		public UnmoderatedCaucusView()
 		{
 			InitializeComponent();
@@ -30,7 +22,7 @@ namespace MUNManager.Views {
 			MainWindow.Instance.Title = $"{MainWindow.Instance.EventConfiguration.EventName} | Unmoderated Caucus";
 
 			GlobalTimeLeft = Instance._defaultGlobalTime;
-			
+
 			Timer.Elapsed += TimerOnElapsed;
 			_globalButton = this.FindControl<Button>("GlobalStartStop");
 
@@ -41,22 +33,29 @@ namespace MUNManager.Views {
 			GlobalTimeLeft_Label.Content = $"{GlobalTimeLeft}s left";
 		}
 
+		public Timer Timer { get; } = new(1000);
+
+		public bool GlobalTimerRunning { get; set; }
+		public uint GlobalTimeLeft { get; set; }
+		public ProgressBar GlobalProgressBar { get; }
+
+		// ReSharper disable once InconsistentNaming
+		public Label GlobalTimeLeft_Label { get; }
+		public TextBlock ViewTitle { get; }
+
 		// TODO: Merge into single method to clean up this mess
 		private void TimerOnElapsed(object? sender, ElapsedEventArgs e)
 		{
 			if (!GlobalTimerRunning) return;
-			
+
 			GlobalTimeLeft--;
 			var color = CountdownUtils.DetermineColor(GlobalTimeLeft, _defaultGlobalTime);
-			
+
 			CountdownUtils.SetCountdownUIColor(this, color, Equals(color, VolatileConfiguration.CriticalBrush));
 
 			CountdownUtils.UpdateCountdownUI(this, GlobalTimeLeft == 0);
-			
-			if (GlobalTimeLeft == 0)
-			{
-				GlobalTimerRunning = false;
-			}
+
+			if (GlobalTimeLeft == 0) { GlobalTimerRunning = false; }
 		}
 
 		private void InitializeComponent()
@@ -69,18 +68,18 @@ namespace MUNManager.Views {
 			if (GlobalTimerRunning)
 			{
 				_globalButton.Content = "Start Global";
-				GlobalTimeLeft_Label.Content = $"{GlobalTimeLeft}s left (Paused)";	
+				GlobalTimeLeft_Label.Content = $"{GlobalTimeLeft}s left (Paused)";
 
 				GlobalTimerRunning = false;
-				
+
 				CountdownUtils.SetCountdownUIColor(this, Brushes.White);
 			}
 			else
 			{
 				GlobalTimerRunning = true;
-				
+
 				_globalButton.Content = "Pause Global";
-				GlobalTimeLeft_Label.Content = $"{GlobalTimeLeft}s left";	
+				GlobalTimeLeft_Label.Content = $"{GlobalTimeLeft}s left";
 			}
 		}
 

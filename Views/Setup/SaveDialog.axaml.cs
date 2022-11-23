@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -10,6 +8,7 @@ using MUNManager.Configuration;
 namespace MUNManager.Views.Setup {
 	public partial class SaveDialog : Window {
 		private static SaveDialog _instance;
+
 		public SaveDialog()
 		{
 			InitializeComponent();
@@ -36,7 +35,7 @@ namespace MUNManager.Views.Setup {
 			{
 				Title = "Select a configuration file",
 				DefaultExtension = "ini",
-				InitialFileName = "EventConfiguration.ini",
+				InitialFileName = "EventConfiguration.ini"
 			};
 			var result = await fd.ShowAsync(_instance);
 			if (result == null) return;
@@ -44,7 +43,7 @@ namespace MUNManager.Views.Setup {
 			var fsConfig = new ConfigurationBuilder<IEventConfiguration>()
 				.UseIniFile(result)
 				.Build();
-			fsConfig.Debug = MainWindow.Instance.EventConfiguration.Debug;
+			//fsConfig.Debug = MainWindow.Instance.GlobalConfiguration.DebugMode;
 			fsConfig.Participants = string.Join('-', MainWindow.Instance.EventConfiguration.Participants.Split('-'));
 			fsConfig.EventName = MainWindow.Instance.EventConfiguration.EventName.Replace(';', '-');
 			fsConfig.DoOpeningSpeeches = MainWindow.Instance.EventConfiguration.DoOpeningSpeeches;

@@ -45,30 +45,30 @@
         <PackageReference Include="XamlNameReferenceGenerator" Version="1.4.2" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include=".github\dependabot.yml" />
-      <Content Include=".github\workflows\codeql.yml" />
-      <Content Include="Resources/**/*">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
+        <Content Include=".github\dependabot.yml" />
+        <Content Include=".github\workflows\codeql.yml" />
+        <Content Include="Resources/**/*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
     <ItemGroup>
-      <Compile Update="Views\UnmoderatedCaucusView.axaml.cs">
-        <DependentUpon>UnmoderatedCaucusView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Setup\CountrySelection.axaml.cs">
-        <DependentUpon>CountrySelection.axaml</DependentUpon>
-      </Compile>
-      <Compile Update="Views\DebugView.axaml.cs">
-        <DependentUpon>BlankView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
+        <Compile Update="Views\UnmoderatedCaucusView.axaml.cs">
+            <DependentUpon>UnmoderatedCaucusView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\Setup\CountrySelection.axaml.cs">
+            <DependentUpon>CountrySelection.axaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\DebugView.axaml.cs">
+            <DependentUpon>BlankView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
-      <None Remove="Assets\Branding\MUNManager-Icon.png" />
-      <AvaloniaResource Include="Assets\Branding\MUNManager-Icon.png">
-        <Pack>True</Pack>
-        <PackagePath></PackagePath>
-      </AvaloniaResource>
+        <None Remove="Assets\Branding\MUNManager-Icon.png" />
+        <AvaloniaResource Include="Assets\Branding\MUNManager-Icon.png">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </AvaloniaResource>
     </ItemGroup>
 </Project>

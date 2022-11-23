@@ -1,13 +1,11 @@
 // (c) 2022, RyderForNow. This project is licensed under AGPL v.3.0.
 
 using System;
-using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using MUNManager.Configuration;
 using MUNManager.Utils;
 
 namespace MUNManager.Views {
@@ -34,13 +32,13 @@ namespace MUNManager.Views {
 			var remainingTime = ModeratedCaucusView.Instance.CurrentTimeLeft;
 			ModeratedCaucusView.Reset();
 			ModeratedCaucusView.Instance.CurrentTimeLeft += remainingTime;
-			if (MainWindow.Instance.EventConfiguration.Debug)
+			if (MainWindow.Instance.GlobalConfiguration.DebugMode)
 				Console.WriteLine($"{ModeratedCaucusView.Instance.CurrentTimeLeft} seconds remaining (added {remainingTime} seconds)");
 			CountdownUtils.UpdateCountdownUI(ModeratedCaucusView.Instance, 1);
 			CountdownUtils.SetCountdownUIColor(ModeratedCaucusView.Instance, Brushes.White, 1);
 			Close();
 		}
-		
+
 		private void Chair_Click(object? sender, RoutedEventArgs e)
 		{
 			ModeratedCaucusView.Reset();

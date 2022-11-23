@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
@@ -15,6 +14,8 @@ namespace MUNManager.Views.Setup {
 			InitializeComponent();
 			MainWindow.Instance.Background = Brushes.Transparent;
 			MainWindow.Instance.TransparencyLevelHint = WindowTransparencyLevel.AcrylicBlur;
+
+			this.FindControl<Button>("PreferencesButton").IsVisible = MainWindow.Instance.GlobalConfiguration.DebugMode;
 		}
 
 		private void InitializeComponent()
@@ -43,8 +44,13 @@ namespace MUNManager.Views.Setup {
 			MainWindow.Instance.EventConfiguration = fsConfig;
 			// Check whether it needs to be split and re-joined - seems odd.
 			MainWindow.Instance.EventConfiguration.Participants = string.Join('-', fsConfig.Participants.Split('-'));
-			MainWindow.Instance.EventConfiguration.Debug = IfUtils.Contains(Environment.GetCommandLineArgs(), "-d", "--debug");
+			//MainWindow.Instance.GlobalConfiguration.Debug = IfUtils.Contains(Environment.GetCommandLineArgs(), "-d", "--debug");
 			MainWindow.Instance.Content = new HomeView();
+		}
+
+		private void Preferences_Click(object? sender, RoutedEventArgs e)
+		{
+			new PreferenceWindow().Show();
 		}
 	}
 }
