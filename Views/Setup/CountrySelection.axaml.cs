@@ -26,6 +26,8 @@ namespace MUNManager.Views.Setup {
 
 			_searchBox.Items = AvailableCountries;
 			_selectedCountriesListBox.Items = SelectedCountries;
+
+			_selectedCountriesListBox.Background = Background;
 		}
 
 		private void InitializeComponent()

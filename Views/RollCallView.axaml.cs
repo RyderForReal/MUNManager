@@ -43,6 +43,7 @@ namespace MUNManager.Views {
 
 		private void RollCallFinished_Click(object? sender, RoutedEventArgs e)
 		{
+			if (_presentCountries.Count == 0) return;
 			foreach (var country in _presentCountries) { MainWindow.Instance.PresentParticipants.Add(country); }
 
 			if (MainWindow.Instance.EventConfiguration.DoOpeningSpeeches) { MainWindow.Instance.Content = new OpeningSpeechView(); }
