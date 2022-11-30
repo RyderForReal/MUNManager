@@ -11,6 +11,7 @@ namespace MUNManager.Views.Setup {
 		{
 			InitializeComponent();
 			MainWindow.Instance.Background = new SolidColorBrush(Color.Parse("#121212"));
+			MainWindow.Instance.Foreground = new SolidColorBrush(Color.Parse("#FFFFFF"));
 			MainWindow.Instance.TransparencyLevelHint = WindowTransparencyLevel.None;
 			_doOpeningSpeeches = this.Find<ToggleSwitch>("OpeningSpeeches");
 			MainWindow.Instance.Title = "Set up an Event | MUNManager";

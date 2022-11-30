@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using MUNManager.Configuration;
 using MUNManager.Utils;
 
 
@@ -24,7 +26,6 @@ namespace MUNManager.Views.Setup {
 
 			_searchBox.Items = AvailableCountries;
 			_selectedCountriesListBox.Items = SelectedCountries;
-
 		}
 
 		private void InitializeComponent()
