@@ -20,6 +20,9 @@ namespace MUNManager.Views {
 			_presentListBox = this.FindControl<ListBox>("PresentCountries");
 			_absentListBox.Items = _absentCountries;
 			_presentListBox.Items = _presentCountries;
+			
+			_absentListBox.Background = Background;
+			_presentListBox.Background = Background;
 		}
 
 		private void InitializeComponent()

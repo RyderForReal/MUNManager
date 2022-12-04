@@ -69,6 +69,8 @@ namespace MUNManager.Views {
 			this.FindControl<TextBlock>("AllAvailableSpeakersInfo").Text = $"Available: {string.Join(", ", AvailableSpeakers)}";
 
 			CountdownUtils.SetCountdownUIColor(this, Brushes.White, 100);
+
+			_nextList.Background = Background;
 		}
 
 		public Timer Timer { get; } = new(1000);
